@@ -51,8 +51,10 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ success: true })
   } catch (err) {
-    const msg = err instanceof Error ? err.message : String(err)
-    console.error('[submit] Erro interno:', msg)
-    return NextResponse.json({ error: msg }, { status: 500 })
+    console.error('[submit] Erro interno:', err)
+    return NextResponse.json(
+      { error: 'Ocorreu um erro ao enviar. Por favor, tente novamente.' },
+      { status: 500 }
+    )
   }
 }

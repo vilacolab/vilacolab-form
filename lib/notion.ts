@@ -6,9 +6,10 @@ const notion = new Client({ auth: process.env.NOTION_TOKEN })
 const DATABASE_ID = process.env.NOTION_DATABASE_ID!
 const CRM_DATABASE_ID = '4a69244678a74a4490e4cd13723cfb9b'
 
-// Notion não aceita vírgulas em nomes de opções select/multi_select
+// Notion: sem vírgulas e máximo 100 chars em nomes de select/multi_select
 function sanitizeOption(value: string): string {
-  return value.replace(/,/g, ' —')
+  const cleaned = value.replace(/,/g, ' —')
+  return cleaned.length > 100 ? cleaned.slice(0, 97) + '...' : cleaned
 }
 
 export async function createNotionEntry(answers: FormAnswers): Promise<string> {
