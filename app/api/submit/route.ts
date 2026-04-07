@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { FormAnswers } from '@/types/form'
-import { createNotionEntry } from '@/lib/notion'
+import { createNotionEntry, createCRMEntry } from '@/lib/notion'
 import { sendNotificationEmail } from '@/lib/email'
 
 const REQUIRED_FIELDS = [
@@ -32,15 +32,21 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    // 1. Cria a entrada no Notion
+    // 1. Cria a entrada no banco de respostas do formulário
     const notionUrl = await createNotionEntry(body)
 
-    // 2. Envia e-mail de notificação (não bloqueia em caso de falha)
+    // 2. Adiciona lead no CRM (não bloqueia em caso de falha)
+    try {
+      await createCRMEntry(body)
+    } catch (crmErr) {
+      console.error('[crm] Falha ao criar entrada no CRM:', crmErr)
+    }
+
+    // 3. Envia e-mail de notificação (não bloqueia em caso de falha)
     try {
       await sendNotificationEmail(body, notionUrl)
     } catch (emailErr) {
       console.error('[email] Falha ao enviar notificação:', emailErr)
-      // Não retorna erro para o usuário — o Notion já foi salvo
     }
 
     return NextResponse.json({ success: true })

@@ -4,6 +4,7 @@ import { FormAnswers } from '@/types/form'
 const notion = new Client({ auth: process.env.NOTION_TOKEN })
 
 const DATABASE_ID = process.env.NOTION_DATABASE_ID!
+const CRM_DATABASE_ID = '4a69244678a74a4490e4cd13723cfb9b'
 
 export async function createNotionEntry(answers: FormAnswers): Promise<string> {
   const response = await notion.pages.create({
@@ -68,4 +69,30 @@ export async function createNotionEntry(answers: FormAnswers): Promise<string> {
   // Constrói a URL da página a partir do ID (remove hífens)
   const pageId = response.id.replace(/-/g, '')
   return `https://www.notion.so/${pageId}`
+}
+
+export async function createCRMEntry(answers: FormAnswers): Promise<void> {
+  await notion.pages.create({
+    parent: { database_id: CRM_DATABASE_ID },
+    properties: {
+      Nome: {
+        title: [{ text: { content: String(answers.nome ?? '') } }],
+      },
+      Empresa: {
+        rich_text: [{ text: { content: String(answers.empresa ?? '') } }],
+      },
+      Telefone: {
+        phone_number: String(answers.whatsapp ?? ''),
+      },
+      Email: {
+        email: String(answers.email ?? ''),
+      },
+      Status: {
+        status: { name: 'Lead' },
+      },
+      Responsável: {
+        multi_select: [{ name: 'Carol' }],
+      },
+    },
+  })
 }
