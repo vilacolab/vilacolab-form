@@ -1,0 +1,32 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --ink:       #1C1B18;
+  --ink-mid:   #4E4D48;
+  --ink-light: #96958E;
+  --cream:     #F4F1EA;
+  --cream-d:   #EAE6DC;
+  --cream-dd:  #DDD9CE;
+  --white:     #FDFCF9;
+  --border:    rgba(28, 27, 24, 0.10);
+  --border-md: rgba(28, 27, 24, 0.18);
+  --border-dk: rgba(28, 27, 24, 0.30);
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background: var(--cream);
+  color: var(--ink);
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  line-height: 1.6;
+}
