@@ -12,6 +12,27 @@ function sanitizeOption(value: string): string {
   return cleaned.length > 100 ? cleaned.slice(0, 97) + '...' : cleaned
 }
 
+// Valida e sanitiza URL — retorna null se inválida
+function sanitizeUrl(value: unknown): string | null {
+  const raw = value ? String(value).trim() : ''
+  if (!raw) return null
+  let url = raw
+  if (url.startsWith('@')) url = `https://www.instagram.com/${url.slice(1)}`
+  if (!url.startsWith('http://') && !url.startsWith('https://')) url = `https://${url}`
+  try {
+    new URL(url)
+    return url
+  } catch {
+    return null // URL inválida → não envia ao Notion
+  }
+}
+
+// Garante email válido ou null
+function sanitizeEmail(value: unknown): string | null {
+  const raw = value ? String(value).trim() : ''
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(raw) ? raw : null
+}
+
 export async function createNotionEntry(answers: FormAnswers): Promise<string> {
   const response = await notion.pages.create({
     parent: { database_id: DATABASE_ID },
@@ -21,24 +42,16 @@ export async function createNotionEntry(answers: FormAnswers): Promise<string> {
         title: [{ text: { content: String(answers.nome ?? '') } }],
       },
       whatsapp: {
-        phone_number: String(answers.whatsapp ?? ''),
+        phone_number: String(answers.whatsapp ?? '').replace(/[^\d\s+\-().]/g, ''),
       },
       email: {
-        email: String(answers.email ?? ''),
+        email: sanitizeEmail(answers.email) ?? String(answers.email ?? ''),
       },
       empresa: {
-        rich_text: [{ text: { content: String(answers.empresa ?? '') } }],
+        rich_text: [{ text: { content: String(answers.empresa ?? '').slice(0, 2000) } }],
       },
       instagram: {
-        url: (() => {
-          const ig = answers.instagram ? String(answers.instagram).trim() : ''
-          if (!ig) return null
-          // Remove @ e converte handle para URL completa
-          if (ig.startsWith('@')) return `https://www.instagram.com/${ig.slice(1)}`
-          // Adiciona https:// se não tiver protocolo
-          if (!ig.startsWith('http://') && !ig.startsWith('https://')) return `https://${ig}`
-          return ig
-        })(),
+        url: sanitizeUrl(answers.instagram),
       },
       perfil: {
         select: answers.perfil ? { name: sanitizeOption(String(answers.perfil)) } : null,
