@@ -58,14 +58,8 @@ export default function ObrigadoPage() {
           href="https://www.vilacolab.com.br"
           target="_blank"
           rel="noopener noreferrer"
-          className="text-sm transition-colors"
+          className="text-sm transition-colors hover:opacity-60"
           style={{ color: 'var(--ink-mid)' }}
-          onMouseEnter={(e: React.MouseEvent<HTMLAnchorElement>) =>
-            (e.currentTarget.style.color = 'var(--ink)')
-          }
-          onMouseLeave={(e: React.MouseEvent<HTMLAnchorElement>) =>
-            (e.currentTarget.style.color = 'var(--ink-mid)')
-          }
         >
           Conheça o nosso trabalho →
         </Link>

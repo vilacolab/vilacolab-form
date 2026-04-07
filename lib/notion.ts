@@ -57,5 +57,7 @@ export async function createNotionEntry(answers: FormAnswers): Promise<string> {
     },
   })
 
-  return response.url
+  // Constrói a URL da página a partir do ID (remove hífens)
+  const pageId = response.id.replace(/-/g, '')
+  return `https://www.notion.so/${pageId}`
 }
