@@ -136,7 +136,7 @@ export default function FormWrapper() {
           <div className="flex items-start justify-between">
             <div className="flex flex-col gap-1">
               <Logo />
-              <p className="text-xs" style={{ color: 'var(--ink-light)', letterSpacing: '0.01em' }}>
+              <p style={{ fontSize: '13px', color: 'var(--ink-light)', letterSpacing: '0.01em' }}>
                 somos um estúdio brasileiro de design estratégico e criativo para marcas únicas.
               </p>
             </div>

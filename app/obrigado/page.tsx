@@ -12,7 +12,7 @@ export default function ObrigadoPage() {
         {/* Logo */}
         <div className="flex flex-col items-center gap-2">
           <Logo />
-          <p className="text-xs text-center" style={{ color: 'var(--ink-light)', letterSpacing: '0.01em' }}>
+          <p className="text-center" style={{ fontSize: '13px', color: 'var(--ink-light)', letterSpacing: '0.01em' }}>
             somos um estúdio brasileiro de design estratégico e criativo para marcas únicas.
           </p>
         </div>

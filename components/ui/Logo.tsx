@@ -9,11 +9,11 @@ export default function Logo({ className = '' }: LogoProps) {
     <Image
       src="/comercial/logo.png"
       alt="VilaColab"
-      width={120}
-      height={76}
+      width={1274}
+      height={810}
       priority
       className={className}
-      style={{ height: '68px', width: 'auto' }}
+      style={{ height: '72px', width: 'auto' }}
     />
   )
 }
