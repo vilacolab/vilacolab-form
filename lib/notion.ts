@@ -23,7 +23,15 @@ export async function createNotionEntry(answers: FormAnswers): Promise<string> {
         rich_text: [{ text: { content: String(answers.empresa ?? '') } }],
       },
       instagram: {
-        url: answers.instagram ? String(answers.instagram) : null,
+        url: (() => {
+          const ig = answers.instagram ? String(answers.instagram).trim() : ''
+          if (!ig) return null
+          // Remove @ e converte handle para URL completa
+          if (ig.startsWith('@')) return `https://www.instagram.com/${ig.slice(1)}`
+          // Adiciona https:// se não tiver protocolo
+          if (!ig.startsWith('http://') && !ig.startsWith('https://')) return `https://${ig}`
+          return ig
+        })(),
       },
       perfil: {
         select: answers.perfil ? { name: String(answers.perfil) } : null,

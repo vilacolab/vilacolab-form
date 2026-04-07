@@ -47,7 +47,7 @@ export async function POST(req: NextRequest) {
   } catch (err) {
     console.error('[submit] Erro interno:', err)
     return NextResponse.json(
-      { error: 'Erro interno. Por favor, tente novamente.' },
+      { error: 'Ocorreu um erro ao enviar. Por favor, tente novamente.' },
       { status: 500 }
     )
   }
