@@ -90,7 +90,35 @@ export async function createNotionEntry(answers: FormAnswers): Promise<string> {
   return `https://www.notion.so/${pageId}`
 }
 
+function txt(content: string) {
+  return [{ text: { content } }]
+}
+
+function heading(content: string) {
+  return {
+    object: 'block' as const,
+    type: 'heading_3' as const,
+    heading_3: { rich_text: txt(content) },
+  }
+}
+
+function paragraph(content: string) {
+  return {
+    object: 'block' as const,
+    type: 'paragraph' as const,
+    paragraph: { rich_text: txt(content) },
+  }
+}
+
+function divider() {
+  return { object: 'block' as const, type: 'divider' as const, divider: {} }
+}
+
 export async function createCRMEntry(answers: FormAnswers): Promise<void> {
+  const desafios = Array.isArray(answers.desafios)
+    ? answers.desafios.join('\n• ')
+    : String(answers.desafios ?? '—')
+
   await notion.pages.create({
     parent: { database_id: CRM_DATABASE_ID },
     properties: {
@@ -113,5 +141,32 @@ export async function createCRMEntry(answers: FormAnswers): Promise<void> {
         multi_select: [{ name: 'Carol' }],
       },
     },
+    children: [
+      heading('Qualificação — Respostas do formulário'),
+      divider(),
+
+      heading('Perfil'),
+      paragraph(String(answers.perfil ?? '—')),
+
+      heading('Segmento'),
+      paragraph(String(answers.segmento ?? '—')),
+
+      heading('Momento atual'),
+      paragraph(String(answers.momento ?? '—')),
+
+      heading('Estágio da marca'),
+      paragraph(String(answers.estagio_marca ?? '—')),
+
+      heading('Disponibilidade'),
+      paragraph(String(answers.disponibilidade ?? '—')),
+
+      heading('Desafios'),
+      paragraph(desafios ? `• ${desafios}` : '—'),
+
+      divider(),
+
+      heading('O que te trouxe até aqui'),
+      paragraph(String(answers.motivacao ?? '—')),
+    ],
   })
 }
