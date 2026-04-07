@@ -133,8 +133,13 @@ export default function FormWrapper() {
         style={{ background: 'rgba(244,241,234,0.92)', borderBottom: '1px solid var(--border)' }}
       >
         <div className="max-w-form mx-auto flex flex-col gap-4">
-          <div className="flex items-center justify-between">
-            <Logo />
+          <div className="flex items-start justify-between">
+            <div className="flex flex-col gap-1">
+              <Logo />
+              <p className="text-xs" style={{ color: 'var(--ink-light)', letterSpacing: '0.01em' }}>
+                somos um estúdio brasileiro de design estratégico e criativo para marcas únicas.
+              </p>
+            </div>
             {step > 0 && (
               <button
                 onClick={goBack}
@@ -191,7 +196,7 @@ export default function FormWrapper() {
 
       {/* Footer */}
       <footer className="pb-6 text-center">
-        <p className="text-xs" style={{ color: 'var(--ink-light)' }}>
+        <p className="text-sm" style={{ color: 'var(--ink-light)' }}>
           Design é estratégia em movimento © VilaColab
         </p>
       </footer>

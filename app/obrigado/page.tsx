@@ -10,7 +10,12 @@ export default function ObrigadoPage() {
       <div className="w-full max-w-lg flex flex-col items-center text-center gap-10">
 
         {/* Logo */}
-        <Logo />
+        <div className="flex flex-col items-center gap-2">
+          <Logo />
+          <p className="text-xs text-center" style={{ color: 'var(--ink-light)', letterSpacing: '0.01em' }}>
+            somos um estúdio brasileiro de design estratégico e criativo para marcas únicas.
+          </p>
+        </div>
 
         {/* Divisor */}
         <div className="w-full" style={{ borderTop: '1px solid var(--border-md)' }} />
@@ -64,7 +69,7 @@ export default function ObrigadoPage() {
           Conheça o nosso trabalho →
         </Link>
 
-        <p className="text-xs italic" style={{ color: 'var(--ink-light)' }}>
+        <p className="text-sm italic" style={{ color: 'var(--ink-light)' }}>
           Design é estratégia em movimento © VilaColab
         </p>
 
