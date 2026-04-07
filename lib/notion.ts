@@ -142,25 +142,33 @@ export async function createCRMEntry(answers: FormAnswers): Promise<void> {
       },
     },
     children: [
-      heading('Qualificação — Respostas do formulário'),
+      heading('Contato'),
+      paragraph(`Nome: ${String(answers.nome ?? '—')}`),
+      paragraph(`Empresa: ${String(answers.empresa ?? '—')}`),
+      paragraph(`WhatsApp: ${String(answers.whatsapp ?? '—')}`),
+      paragraph(`E-mail: ${String(answers.email ?? '—')}`),
+      paragraph(`Instagram: ${answers.instagram ? String(answers.instagram) : '—'}`),
+
       divider(),
 
-      heading('Perfil'),
+      heading('Respostas do formulário'),
+
+      heading('Como se descreve?'),
       paragraph(String(answers.perfil ?? '—')),
 
       heading('Segmento'),
       paragraph(String(answers.segmento ?? '—')),
 
-      heading('Momento atual'),
+      heading('Momento atual do negócio'),
       paragraph(String(answers.momento ?? '—')),
 
       heading('Estágio da marca'),
       paragraph(String(answers.estagio_marca ?? '—')),
 
-      heading('Disponibilidade'),
+      heading('Disponibilidade para o projeto'),
       paragraph(String(answers.disponibilidade ?? '—')),
 
-      heading('Desafios'),
+      heading('O que falta na marca hoje'),
       paragraph(desafios ? `• ${desafios}` : '—'),
 
       divider(),
