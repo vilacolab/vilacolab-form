@@ -134,7 +134,7 @@ export default function FormWrapper() {
       >
         <div className="max-w-form mx-auto flex flex-col gap-4">
           <div className="flex items-start justify-between">
-            <div className="flex flex-col gap-1">
+            <div className="flex flex-col gap-1 w-fit">
               <Logo />
               <p style={{ fontSize: '13px', color: 'var(--ink-light)', letterSpacing: '0.01em' }}>
                 somos um estúdio brasileiro de design estratégico e criativo para marcas únicas.
