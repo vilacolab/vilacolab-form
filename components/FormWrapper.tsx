@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useCallback } from 'react'
+import ReelBanner from './ReelBanner'
 import { useRouter } from 'next/navigation'
 import { AnimatePresence, motion } from 'framer-motion'
 import { questions } from '@/lib/questions'
@@ -140,7 +141,7 @@ export default function FormWrapper() {
           <div className="max-w-form mx-auto">
             <div className="flex flex-col gap-1 w-fit">
               <Logo />
-              <p style={{ fontSize: '13px', color: 'var(--ink-light)', letterSpacing: '0.01em' }}>
+              <p style={{ fontSize: '15px', color: 'var(--ink-light)', letterSpacing: '0.01em' }}>
                 somos um estúdio brasileiro de design estratégico e criativo para marcas únicas.
               </p>
             </div>
@@ -148,25 +149,14 @@ export default function FormWrapper() {
         </header>
 
         {/* Conteúdo */}
-        <main className="flex-1 flex flex-col items-center justify-center px-6 py-12">
-          <div className="w-full max-w-form flex flex-col gap-8">
+        <main className="flex-1 flex flex-col items-center justify-center py-12">
 
-            {/* Área do GIF — substitua o src pela URL do seu GIF */}
-            <div
-              className="w-full overflow-hidden"
-              style={{
-                aspectRatio: '16/7',
-                background: 'var(--cream-d)',
-                border: '1px solid var(--border)',
-              }}
-            >
-              <img
-                src="/comercial/welcome.gif"
-                alt=""
-                className="w-full h-full object-cover"
-                onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none' }}
-              />
-            </div>
+          {/* Reel full-width */}
+          <div className="w-full mb-8">
+            <ReelBanner />
+          </div>
+
+          <div className="w-full max-w-form flex flex-col gap-8 px-6">
 
             {/* Texto */}
             <div className="flex flex-col gap-4">
@@ -226,7 +216,7 @@ export default function FormWrapper() {
           <div className="flex items-start justify-between">
             <div className="flex flex-col gap-1 w-fit">
               <Logo />
-              <p style={{ fontSize: '13px', color: 'var(--ink-light)', letterSpacing: '0.01em' }}>
+              <p style={{ fontSize: '15px', color: 'var(--ink-light)', letterSpacing: '0.01em' }}>
                 somos um estúdio brasileiro de design estratégico e criativo para marcas únicas.
               </p>
             </div>
