@@ -22,6 +22,7 @@ const slideVariants = {
 
 export default function FormWrapper() {
   const router = useRouter()
+  const [started, setStarted] = useState(false)
   const [step, setStep] = useState(0)
   const [direction, setDirection] = useState(1)
   const [answers, setAnswers] = useState<FormAnswers>({})
@@ -124,6 +125,95 @@ export default function FormWrapper() {
     }
   }
 
+  // ── Tela de boas-vindas ──────────────────────────────────────────────
+  if (!started) {
+    return (
+      <motion.div
+        className="min-h-screen flex flex-col"
+        style={{ background: 'var(--cream)' }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.4 }}
+      >
+        {/* Header */}
+        <header className="px-6 pt-6 pb-4" style={{ borderBottom: '1px solid var(--border)' }}>
+          <div className="max-w-form mx-auto">
+            <div className="flex flex-col gap-1 w-fit">
+              <Logo />
+              <p style={{ fontSize: '13px', color: 'var(--ink-light)', letterSpacing: '0.01em' }}>
+                somos um estúdio brasileiro de design estratégico e criativo para marcas únicas.
+              </p>
+            </div>
+          </div>
+        </header>
+
+        {/* Conteúdo */}
+        <main className="flex-1 flex flex-col items-center justify-center px-6 py-12">
+          <div className="w-full max-w-form flex flex-col gap-8">
+
+            {/* Área do GIF — substitua o src pela URL do seu GIF */}
+            <div
+              className="w-full overflow-hidden"
+              style={{
+                aspectRatio: '16/7',
+                background: 'var(--cream-d)',
+                border: '1px solid var(--border)',
+              }}
+            >
+              <img
+                src="/comercial/welcome.gif"
+                alt=""
+                className="w-full h-full object-cover"
+                onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none' }}
+              />
+            </div>
+
+            {/* Texto */}
+            <div className="flex flex-col gap-4">
+              <h1
+                className="font-medium leading-snug"
+                style={{ fontSize: 'clamp(26px, 4vw, 36px)', color: 'var(--ink)', letterSpacing: '-0.02em' }}
+              >
+                Que bom ter você por aqui :)
+              </h1>
+              <p style={{ fontSize: '16px', lineHeight: '1.65', color: 'var(--ink-mid)', maxWidth: '480px' }}>
+                Esse formulário existe pra entender o momento da sua marca e se faz sentido a gente trabalhar juntos.
+                Leva menos de 3 minutos.
+              </p>
+            </div>
+
+            {/* Botão */}
+            <div>
+              <button
+                onClick={() => setStarted(true)}
+                className="inline-flex items-center gap-2 font-medium transition-opacity hover:opacity-70"
+                style={{
+                  background: 'var(--ink)',
+                  color: 'var(--cream)',
+                  fontSize: '15px',
+                  padding: '14px 32px',
+                  borderRadius: '6px',
+                  letterSpacing: '0.01em',
+                }}
+              >
+                Começar →
+              </button>
+            </div>
+
+          </div>
+        </main>
+
+        {/* Footer */}
+        <footer className="pb-6 text-center">
+          <p className="text-sm" style={{ color: 'var(--ink-light)' }}>
+            Design é estratégia em movimento © VilaColab
+          </p>
+        </footer>
+      </motion.div>
+    )
+  }
+
+  // ── Formulário ───────────────────────────────────────────────────────
   return (
     <div className="min-h-screen flex flex-col" style={{ background: 'var(--cream)' }}>
 
