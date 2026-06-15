@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'Formulário de Qualificação — VilaColab',
+  title: 'Bem-Vindo ao VilaColab',
   description:
     'Responda algumas perguntas para que possamos entender melhor o seu negócio e como podemos ajudar.',
   robots: { index: false, follow: false },
