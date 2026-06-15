@@ -7,7 +7,7 @@ interface LogoProps {
 export default function Logo({ className = '' }: LogoProps) {
   return (
     <Image
-      src="/comercial/logo.png"
+      src="/logo.png"
       alt="VilaColab"
       width={113}
       height={72}
