@@ -1,28 +1,37 @@
 'use client'
 
 import { useState } from 'react'
-import { Question, ChoiceOption } from '@/types/form'
+import { Question, ChoiceOption, FormAnswers, optionValue } from '@/types/form'
 import Button from '@/components/ui/Button'
+import FollowUpInput from './FollowUpInput'
 
 interface SingleChoiceProps {
   question: Question
-  value: string
-  onChange: (val: string) => void
+  answers: FormAnswers
+  setAnswer: (field: string, val: string | string[]) => void
   onNext: () => void
 }
 
-export default function SingleChoice({
-  question,
-  value,
-  onChange,
-  onNext,
-}: SingleChoiceProps) {
+export default function SingleChoice({ question, answers, setAnswer, onNext }: SingleChoiceProps) {
   const [error, setError] = useState('')
+  const value = (answers[question.notionField] as string) ?? ''
+  const selected = question.options?.find((o) => optionValue(o) === value)
+  const followUp = selected?.followUp
+  const followUpValue = followUp ? ((answers[followUp.field] as string) ?? '') : ''
+
+  // Opções curtas cabem em duas colunas em telas maiores; textos longos ficam em uma
+  const twoColumns =
+    (question.options?.length ?? 0) > 4 &&
+    (question.options ?? []).every((o) => o.label.length <= 42)
 
   function handleSelect(option: ChoiceOption) {
     setError('')
-    onChange(option.label)
-    if (question.autoAdvance) {
+    // Limpa o campo complementar da opção anterior
+    question.options?.forEach((o) => {
+      if (o.followUp && o !== option) setAnswer(o.followUp.field, '')
+    })
+    setAnswer(question.notionField, optionValue(option))
+    if (question.autoAdvance && !option.followUp) {
       setTimeout(() => onNext(), 280)
     }
   }
@@ -32,31 +41,29 @@ export default function SingleChoice({
       setError('Selecione uma opção para continuar.')
       return
     }
+    if (followUp?.required && !followUpValue.trim()) {
+      setError('Preencha o campo acima para continuar.')
+      return
+    }
     onNext()
   }
 
+  const showButton = !question.autoAdvance || Boolean(followUp)
+
   return (
     <div className="flex flex-col gap-3">
-      <div
-        className="grid gap-2"
-        style={{
-          gridTemplateColumns: question.options && question.options.length > 4
-            ? 'repeat(2, 1fr)'
-            : '1fr',
-        }}
-      >
+      <div className={`grid gap-2 grid-cols-1 ${twoColumns ? 'sm:grid-cols-2' : ''}`}>
         {question.options?.map((option) => {
-          const isSelected = value === option.label
+          const isSelected = value === optionValue(option)
           return (
             <button
               key={option.id}
+              type="button"
               onClick={() => handleSelect(option)}
               className="text-left rounded-md px-4 py-3 transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-[var(--border-dk)] focus:ring-offset-1"
               style={{
                 background: isSelected ? 'var(--cream-d)' : 'var(--white)',
-                border: isSelected
-                  ? '1px solid var(--border-dk)'
-                  : '1px solid var(--border-md)',
+                border: isSelected ? '1px solid var(--border-dk)' : '1px solid var(--border-md)',
               }}
               onMouseEnter={(e) => {
                 if (!isSelected) {
@@ -82,15 +89,12 @@ export default function SingleChoice({
                   {option.id}
                 </span>
                 <div className="flex-1">
-                  <p
-                    className="text-sm leading-snug font-medium"
-                    style={{ color: 'var(--ink)' }}
-                  >
+                  <p className="text-sm leading-snug font-medium" style={{ color: 'var(--ink)' }}>
                     {option.label}
                   </p>
-                  {option.sublabel && (
-                    <p className="mt-1 text-xs italic" style={{ color: 'var(--ink-light)' }}>
-                      {option.sublabel}
+                  {option.description && (
+                    <p className="mt-1 text-xs" style={{ color: 'var(--ink-light)' }}>
+                      {option.description}
                     </p>
                   )}
                 </div>
@@ -112,9 +116,19 @@ export default function SingleChoice({
         })}
       </div>
 
+      {followUp && (
+        <FollowUpInput
+          followUp={followUp}
+          value={followUpValue}
+          onChange={(v) => { setError(''); setAnswer(followUp.field, v) }}
+          onEnter={handleNext}
+          error={Boolean(error) && followUp.required && !followUpValue.trim()}
+        />
+      )}
+
       {error && <p className="text-sm text-red-600 mt-1">{error}</p>}
 
-      {!question.autoAdvance && (
+      {showButton && (
         <Button onClick={handleNext} className="mt-1 self-start">
           Avançar →
         </Button>

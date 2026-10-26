@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import ReelBanner from './ReelBanner'
 import { useRouter } from 'next/navigation'
 import { AnimatePresence, motion } from 'framer-motion'
@@ -33,29 +33,33 @@ export default function FormWrapper() {
   const current = questions[step]
   const isLast = step === TOTAL - 1
 
+  // Link de parceiro (ex.: ?ref=flavia). Fica separado da origem que a pessoa declara na P8.
+  useEffect(() => {
+    const ref = new URLSearchParams(window.location.search).get('ref')
+    if (ref) setAnswers((prev) => ({ ...prev, ref_link: ref.trim().slice(0, 100) }))
+  }, [])
+
   const getValue = useCallback(
-    (id: string) => {
-      const v = answers[id]
-      if (current?.type === 'multi-choice') return (v as string[]) ?? []
-      return (v as string) ?? ''
-    },
-    [answers, current]
+    (id: string) => (answers[id] as string) ?? '',
+    [answers]
   )
 
-  function setAnswer(id: string, val: string | string[]) {
+  const setAnswer = useCallback((id: string, val: string | string[]) => {
     setAnswers((prev) => ({ ...prev, [id]: val }))
-  }
+  }, [])
 
   function goNext() {
     if (isLast) { handleSubmit(); return }
     setDirection(1)
     setStep((s) => s + 1)
+    window.scrollTo({ top: 0 })
   }
 
   function goBack() {
     if (step === 0) return
     setDirection(-1)
     setStep((s) => s - 1)
+    window.scrollTo({ top: 0 })
   }
 
   async function handleSubmit() {
@@ -86,7 +90,7 @@ export default function FormWrapper() {
           <TextQuestion
             key={q.id}
             question={q}
-            value={getValue(q.notionField) as string}
+            value={getValue(q.notionField)}
             onChange={(v) => setAnswer(q.notionField, v)}
             onNext={goNext}
           />
@@ -96,8 +100,8 @@ export default function FormWrapper() {
           <SingleChoice
             key={q.id}
             question={q}
-            value={getValue(q.notionField) as string}
-            onChange={(v) => setAnswer(q.notionField, v)}
+            answers={answers}
+            setAnswer={setAnswer}
             onNext={goNext}
           />
         )
@@ -106,8 +110,8 @@ export default function FormWrapper() {
           <MultiChoice
             key={q.id}
             question={q}
-            value={getValue(q.notionField) as string[]}
-            onChange={(v) => setAnswer(q.notionField, v)}
+            answers={answers}
+            setAnswer={setAnswer}
             onNext={goNext}
           />
         )
@@ -116,7 +120,7 @@ export default function FormWrapper() {
           <TextAreaQuestion
             key={q.id}
             question={q}
-            value={getValue(q.notionField) as string}
+            value={getValue(q.notionField)}
             onChange={(v) => setAnswer(q.notionField, v)}
             onNext={goNext}
             isLast={isLast}
@@ -126,7 +130,7 @@ export default function FormWrapper() {
     }
   }
 
-  // ── Tela de boas-vindas ──────────────────────────────────────────────
+  // ── Tela de abertura ─────────────────────────────────────────────────
   if (!started) {
     return (
       <motion.div
@@ -164,11 +168,14 @@ export default function FormWrapper() {
                 className="font-medium leading-snug"
                 style={{ fontSize: 'clamp(26px, 4vw, 36px)', color: 'var(--ink)', letterSpacing: '-0.02em' }}
               >
-                Que bom ter você por aqui :)
+                Antes de conversarmos, queremos conhecer seu negócio.
               </h1>
-              <p style={{ fontSize: '16px', lineHeight: '1.65', color: 'var(--ink-mid)', maxWidth: '480px' }}>
-                Esse formulário existe pra entender o momento da sua marca e se faz sentido a gente trabalhar juntos.
-                Leva menos de 3 minutos.
+              <p style={{ fontSize: '16px', lineHeight: '1.65', color: 'var(--ink-mid)', maxWidth: '520px' }}>
+                Preparamos algumas perguntas para entender seu momento, seus desafios e o que você busca
+                para sua marca. O preenchimento leva aproximadamente 6 minutos.
+              </p>
+              <p style={{ fontSize: '16px', lineHeight: '1.65', color: 'var(--ink-mid)', maxWidth: '520px' }}>
+                Responda com suas palavras. Não existem respostas certas ou erradas.
               </p>
             </div>
 
@@ -237,7 +244,7 @@ export default function FormWrapper() {
       </header>
 
       {/* Conteúdo */}
-      <main className="flex-1 flex items-start justify-center px-6 pt-12 pb-24">
+      <main className="flex-1 flex items-start justify-center px-6 pt-12 pb-24 overflow-x-clip">
         <div className="w-full max-w-form">
           <AnimatePresence mode="wait" custom={direction}>
             <motion.div
@@ -262,6 +269,11 @@ export default function FormWrapper() {
                 >
                   {current.question}
                 </h2>
+                {current.sublabel && (
+                  <p className="text-sm leading-relaxed" style={{ color: 'var(--ink-light)', maxWidth: '560px' }}>
+                    {current.sublabel}
+                  </p>
+                )}
               </div>
 
               {renderQuestion()}

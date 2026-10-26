@@ -1,48 +1,40 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { FormAnswers } from '@/types/form'
+import { REQUIRED_FIELDS, FOLLOW_UPS } from '@/lib/questions'
+import { list, str } from '@/lib/format'
 import { createNotionEntry, createCRMEntry } from '@/lib/notion'
 import { sendNotificationEmail } from '@/lib/email'
-
-const REQUIRED_FIELDS = [
-  'nome',
-  'whatsapp',
-  'email',
-  'empresa',
-  'perfil',
-  'segmento',
-  'momento',
-  'desafios',
-  'estagio_marca',
-  'disponibilidade',
-  'motivacao',
-]
 
 export async function POST(req: NextRequest) {
   try {
     const body: FormAnswers = await req.json()
 
-    // Validação dos campos obrigatórios
+    // Campos obrigatórios
     for (const field of REQUIRED_FIELDS) {
       const val = body[field]
-      if (!val || (Array.isArray(val) && val.length === 0)) {
-        return NextResponse.json(
-          { error: `Campo obrigatório ausente: ${field}` },
-          { status: 400 }
-        )
+      if (!val || (Array.isArray(val) ? val.length === 0 : !String(val).trim())) {
+        return NextResponse.json({ error: `Campo obrigatório ausente: ${field}` }, { status: 400 })
       }
     }
 
-    // 1. Cria a entrada no banco de respostas do formulário
+    // Campos complementares obrigatórios (ex.: "Outro. Qual?", "Quem indicou?")
+    for (const { parentField, value, followUp } of FOLLOW_UPS) {
+      if (followUp.required && list(body, parentField).includes(value) && !str(body, followUp.field)) {
+        return NextResponse.json({ error: `Campo obrigatório ausente: ${followUp.field}` }, { status: 400 })
+      }
+    }
+
+    // 1. Banco de respostas do formulário
     const notionUrl = await createNotionEntry(body)
 
-    // 2. Adiciona lead no CRM (não bloqueia em caso de falha)
+    // 2. Card no CRM (não bloqueia em caso de falha)
     try {
       await createCRMEntry(body)
     } catch (crmErr) {
       console.error('[crm] Falha ao criar entrada no CRM:', crmErr)
     }
 
-    // 3. Envia e-mail de notificação (não bloqueia em caso de falha)
+    // 3. E-mail de notificação (não bloqueia em caso de falha)
     try {
       await sendNotificationEmail(body, notionUrl)
     } catch (emailErr) {

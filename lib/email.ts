@@ -1,24 +1,50 @@
 import { Resend } from 'resend'
 import { FormAnswers } from '@/types/form'
+import { labelFor } from '@/lib/questions'
+import { str, readable, originSummary, followUpText, sanitizeUrl, waLink, esc } from '@/lib/format'
 
 const resend = new Resend(process.env.RESEND_API_KEY)
 
-function formatList(value: string | string[] | undefined): string {
-  if (!value) return '—'
-  if (Array.isArray(value)) return value.join(', ')
-  return value
+const LABEL = 'margin:0 0 4px;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#96958E;'
+const LINE = 'border-bottom:1px solid rgba(28,27,24,0.10);'
+
+function row(label: string, value: string): string {
+  return `
+    <tr>
+      <td style="padding:14px 0;${LINE}">
+        <p style="${LABEL}">${esc(label)}</p>
+        <p style="margin:0;font-size:14px;line-height:1.55;color:#1C1B18;">${esc(value || '-')}</p>
+      </td>
+    </tr>`
 }
 
-export async function sendNotificationEmail(
-  answers: FormAnswers,
-  notionUrl: string
-): Promise<void> {
-  const nome = String(answers.nome ?? '')
-  const empresa = String(answers.empresa ?? '')
-  const whatsapp = String(answers.whatsapp ?? '')
-  const email = String(answers.email ?? '')
-  const instagram = answers.instagram ? String(answers.instagram) : '—'
-  const waLink = `https://wa.me/55${whatsapp.replace(/\D/g, '')}`
+function quote(label: string, value: string): string {
+  return `
+    <table width="100%" cellpadding="0" cellspacing="0" style="margin-top:20px;">
+      <tr>
+        <td style="padding:20px 24px;background:#EAE6DC;border-left:2px solid #1C1B18;">
+          <p style="${LABEL}margin-bottom:6px;">${esc(label)}</p>
+          <p style="margin:0;font-size:15px;line-height:1.65;color:#1C1B18;font-style:italic;">“${esc(value || '-')}”</p>
+        </td>
+      </tr>
+    </table>`
+}
+
+export async function sendNotificationEmail(answers: FormAnswers, notionUrl: string): Promise<void> {
+  const nome = str(answers, 'nome')
+  const empresa = str(answers, 'empresa')
+  const whatsapp = str(answers, 'whatsapp')
+  const email = str(answers, 'email')
+  const marcaRaw = str(answers, 'instagram')
+  const marcaUrl = sanitizeUrl(marcaRaw)
+  const dataImportante = followUpText(answers, 'data_importante')
+  const prazo = labelFor('prazo', str(answers, 'prazo')) + (dataImportante ? ` · data importante: ${dataImportante}` : '')
+
+  const marcaHtml = marcaRaw
+    ? ` &nbsp;·&nbsp; ${marcaUrl
+        ? `<a href="${esc(marcaUrl)}" style="color:#1C1B18;text-decoration:underline;">${esc(marcaRaw)}</a>`
+        : esc(marcaRaw)}`
+    : ''
 
   const html = `
     <!DOCTYPE html>
@@ -26,7 +52,7 @@ export async function sendNotificationEmail(
     <head>
       <meta charset="UTF-8" />
       <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-      <title>Novo prospecto VilaColab</title>
+      <title>Novo contato VilaColab</title>
     </head>
     <body style="margin:0;padding:0;background:#F4F1EA;font-family:Helvetica Neue,Helvetica,Arial,sans-serif;color:#1C1B18;">
       <table width="100%" cellpadding="0" cellspacing="0" style="background:#F4F1EA;padding:40px 0;">
@@ -34,70 +60,60 @@ export async function sendNotificationEmail(
           <td align="center">
             <table width="580" cellpadding="0" cellspacing="0" style="background:#FDFCF9;border:1px solid rgba(28,27,24,0.10);">
 
-              <!-- Header -->
               <tr>
-                <td style="padding:32px 40px 28px;border-bottom:1px solid rgba(28,27,24,0.10);">
-                  <p style="margin:0 0 2px;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#96958E;">Formulário de qualificação</p>
-                  <p style="margin:0;font-size:22px;font-weight:500;letter-spacing:-0.02em;color:#1C1B18;">Novo prospecto chegou.</p>
+                <td style="padding:32px 40px 28px;${LINE}">
+                  <p style="${LABEL}margin-bottom:2px;">Formulário de primeiro contato</p>
+                  <p style="margin:0;font-size:22px;font-weight:500;letter-spacing:-0.02em;color:#1C1B18;">Novo contato chegou.</p>
                 </td>
               </tr>
 
-              <!-- Body -->
               <tr>
                 <td style="padding:32px 40px;">
 
                   <table width="100%" cellpadding="0" cellspacing="0">
-
-                    <!-- Nome / Empresa -->
                     <tr>
-                      <td style="padding-bottom:24px;border-bottom:1px solid rgba(28,27,24,0.10);">
-                        <p style="margin:0 0 6px;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#96958E;">Contato</p>
-                        <p style="margin:0 0 2px;font-size:20px;font-weight:500;letter-spacing:-0.02em;">${nome}</p>
-                        <p style="margin:0;font-size:14px;color:#4E4D48;">${empresa}${instagram !== '—' ? ` &nbsp;·&nbsp; <a href="https://instagram.com/${instagram.replace('@','')}" style="color:#1C1B18;text-decoration:underline;">${instagram}</a>` : ''}</p>
+                      <td style="padding-bottom:24px;${LINE}">
+                        <p style="${LABEL}margin-bottom:6px;">Contato</p>
+                        <p style="margin:0 0 2px;font-size:20px;font-weight:500;letter-spacing:-0.02em;">${esc(nome)}</p>
+                        <p style="margin:0;font-size:14px;color:#4E4D48;">${esc(empresa)}${marcaHtml}</p>
                       </td>
                     </tr>
-
-                    <!-- WhatsApp / E-mail -->
                     <tr>
-                      <td style="padding:20px 0;border-bottom:1px solid rgba(28,27,24,0.10);">
+                      <td style="padding:20px 0;${LINE}">
                         <table width="100%" cellpadding="0" cellspacing="0">
                           <tr>
                             <td width="50%" style="padding-right:12px;">
-                              <p style="margin:0 0 4px;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#96958E;">WhatsApp</p>
-                              <a href="${waLink}" style="color:#1C1B18;font-size:15px;font-weight:500;text-decoration:underline;">${whatsapp}</a>
+                              <p style="${LABEL}">WhatsApp</p>
+                              <a href="${esc(waLink(whatsapp))}" style="color:#1C1B18;font-size:15px;font-weight:500;text-decoration:underline;">${esc(whatsapp)}</a>
                             </td>
                             <td width="50%">
-                              <p style="margin:0 0 4px;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#96958E;">E-mail</p>
-                              <a href="mailto:${email}" style="color:#1C1B18;font-size:15px;font-weight:500;text-decoration:underline;">${email}</a>
+                              <p style="${LABEL}">E-mail</p>
+                              <a href="mailto:${esc(email)}" style="color:#1C1B18;font-size:15px;font-weight:500;text-decoration:underline;">${esc(email)}</a>
                             </td>
                           </tr>
                         </table>
                       </td>
                     </tr>
-
-                    ${row('Perfil', formatList(answers.perfil))}
-                    ${row('Segmento', formatList(answers.segmento))}
-                    ${row('Momento', formatList(answers.momento))}
-                    ${row('Estágio da marca', formatList(answers.estagio_marca))}
-                    ${row('Disponibilidade', formatList(answers.disponibilidade))}
-                    ${row('Desafios', formatList(answers.desafios))}
+                    ${row('Como chegou', originSummary(answers))}
                   </table>
 
-                  <!-- Motivação -->
-                  <table width="100%" cellpadding="0" cellspacing="0" style="margin-top:24px;">
-                    <tr>
-                      <td style="padding:20px 24px;background:#EAE6DC;border-left:2px solid #1C1B18;">
-                        <p style="margin:0 0 6px;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#96958E;">O que te trouxe até aqui</p>
-                        <p style="margin:0;font-size:15px;line-height:1.65;color:#1C1B18;font-style:italic;">"${formatList(answers.motivacao)}"</p>
-                      </td>
-                    </tr>
+                  ${quote('O que gostaria que entendessem sobre o negócio', str(answers, 'ponto_de_vista'))}
+                  ${quote('O que fez olhar para a marca agora', str(answers, 'motivacao'))}
+
+                  <table width="100%" cellpadding="0" cellspacing="0" style="margin-top:12px;">
+                    ${row('Formatos de interesse', readable(answers, 'formatos_de_interesse'))}
+                    ${row('Quando quer começar', prazo)}
+                    ${row('Participação no projeto', readable(answers, 'disponibilidade'))}
+                    ${row('Como se descreve', readable(answers, 'perfil'))}
+                    ${row('Segmento', readable(answers, 'segmento'))}
+                    ${row('Momento do negócio', readable(answers, 'momento'))}
+                    ${row('Desafios da marca hoje', readable(answers, 'desafios'))}
                   </table>
 
-                  <!-- CTA Notion -->
                   <table width="100%" cellpadding="0" cellspacing="0" style="margin-top:32px;">
                     <tr>
                       <td>
-                        <a href="${notionUrl}" style="display:inline-block;background:#1C1B18;color:#F4F1EA;font-size:14px;font-weight:500;padding:13px 28px;text-decoration:none;letter-spacing:0.01em;">
+                        <a href="${esc(notionUrl)}" style="display:inline-block;background:#1C1B18;color:#F4F1EA;font-size:14px;font-weight:500;padding:13px 28px;text-decoration:none;letter-spacing:0.01em;">
                           Ver no Notion →
                         </a>
                       </td>
@@ -107,12 +123,9 @@ export async function sendNotificationEmail(
                 </td>
               </tr>
 
-              <!-- Footer -->
               <tr>
                 <td style="padding:20px 40px;border-top:1px solid rgba(28,27,24,0.10);">
-                  <p style="margin:0;font-size:12px;color:#96958E;">
-                    Design é estratégia em movimento © VilaColab
-                  </p>
+                  <p style="margin:0;font-size:12px;color:#96958E;">Design é estratégia em movimento © VilaColab</p>
                 </td>
               </tr>
 
@@ -127,18 +140,7 @@ export async function sendNotificationEmail(
   await resend.emails.send({
     from: process.env.FROM_EMAIL!,
     to: process.env.NOTIFICATION_EMAIL!,
-    subject: `🔔 Novo prospecto no formulário VilaColab — ${nome} (${empresa})`,
+    subject: `🔔 Novo contato no formulário VilaColab: ${nome} (${empresa})`,
     html,
   })
-}
-
-function row(label: string, value: string): string {
-  return `
-    <tr>
-      <td style="padding:14px 0;border-bottom:1px solid rgba(28,27,24,0.10);">
-        <p style="margin:0 0 3px;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#96958E;">${label}</p>
-        <p style="margin:0;font-size:14px;color:#1C1B18;">${value || '—'}</p>
-      </td>
-    </tr>
-  `
 }

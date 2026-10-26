@@ -1,60 +1,71 @@
-import { Question } from '@/types/form'
+import { Question, ChoiceOption, optionValue } from '@/types/form'
+
+// Formulário de primeiro contato · v2 (out/2026)
+// Regra de linguagem: sem travessões nos textos exibidos.
 
 export const questions: Question[] = [
+  // ── Bloco 1 · Contato ─────────────────────────────────────────────────
   {
     id: 'P1',
     notionField: 'nome',
     type: 'text',
-    question: 'Qual é o seu nome?',
-    placeholder: 'Seu primeiro nome está ótimo :)',
+    question: 'Como podemos chamar você?',
+    placeholder: 'Seu nome',
+    sublabel: 'Seu primeiro nome está ótimo :)',
     required: true,
   },
   {
     id: 'P2',
     notionField: 'whatsapp',
     type: 'tel',
-    question: 'WhatsApp pra gente se falar:',
+    question: 'Qual é o seu WhatsApp?',
     placeholder: '(00) 00000-0000',
+    sublabel: 'Vamos usar esse número para entrar em contato sobre sua solicitação. Se for um número de fora do Brasil, comece com + e o código do país.',
     required: true,
   },
   {
     id: 'P3',
     notionField: 'email',
     type: 'email',
-    question: 'Seu melhor e-mail:',
+    question: 'Qual é o seu e-mail?',
     placeholder: 'email@exemplo.com',
-    sublabel: 'Só pra garantir que você recebe meu contato, ok?',
+    sublabel: 'Podemos usar esse contato para compartilhar informações sobre o projeto.',
     required: true,
   },
   {
     id: 'P4',
     notionField: 'empresa',
     type: 'text',
-    question: 'Nome da empresa ou projeto:',
-    placeholder: 'Como o mundo conhece o seu negócio',
+    question: 'Qual é o nome da sua empresa ou projeto?',
+    placeholder: 'Nome da empresa ou projeto',
+    sublabel: 'Se ainda não tiver um nome, pode escrever “ainda não definido”.',
     required: true,
   },
   {
     id: 'P5',
     notionField: 'instagram',
     type: 'text',
-    question: 'Instagram da empresa ou projeto:',
-    placeholder: '@',
-    sublabel: 'Se tiver — me ajuda a entender sua marca antes da conversa.',
+    question: 'Onde podemos conhecer sua marca?',
+    placeholder: '@suamarca ou link do site',
+    sublabel: 'Pode ser o Instagram, o site ou outro link. Se ainda não tiver, tudo bem.',
     required: false,
   },
+
+  // ── Bloco 2 · Quem é você e seu negócio ───────────────────────────────
   {
     id: 'P6',
     notionField: 'perfil',
     type: 'single-choice',
-    question: 'Como você se descreve melhor?',
+    question: 'Como você se descreve?',
+    sublabel: 'Escolha a opção que mais se aproxima de você.',
     required: true,
     autoAdvance: true,
     options: [
-      { id: 'A', label: 'Sou fundador(a) ou dono(a) do negócio e quero construir ou fortalecer minha marca.' },
-      { id: 'B', label: 'Estou lançando um negócio ou ideia e preciso estruturar minha marca do zero.' },
-      { id: 'C', label: 'Sou gestor(a) em uma empresa e tenho autonomia para contratar serviços de marca.' },
-      { id: 'D', label: 'Outro...' },
+      { id: 'A', label: 'Sou fundador(a) ou sócio(a) de um negócio.', value: 'Fundador(a) ou sócio(a)' },
+      { id: 'B', label: 'Estou começando um negócio ou desenvolvendo uma ideia.', value: 'Começando um negócio' },
+      { id: 'C', label: 'Sou profissional independente.', value: 'Profissional independente' },
+      { id: 'D', label: 'Trabalho com marca, marketing ou comunicação em uma empresa.', value: 'Marca ou marketing em empresa' },
+      { id: 'E', label: 'Outro. Qual?', value: 'Outro', followUp: { field: 'perfil_outro', placeholder: 'Conte em poucas palavras', required: true } },
     ],
   },
   {
@@ -62,104 +73,169 @@ export const questions: Question[] = [
     notionField: 'segmento',
     type: 'single-choice',
     question: 'Em qual segmento o negócio atua?',
+    sublabel: 'Escolha o segmento que melhor representa sua atividade principal.',
     required: true,
     autoAdvance: true,
     options: [
-      { id: 'A', label: 'Moda e Beleza' },
-      { id: 'B', label: 'Alimentação e Bebidas' },
-      { id: 'C', label: 'Saúde e Bem-estar' },
-      { id: 'D', label: 'Educação e Consultoria' },
-      { id: 'E', label: 'Tecnologia e Inovação' },
-      { id: 'F', label: 'Arquitetura, Design e Decoração' },
-      { id: 'G', label: 'Entretenimento e Cultura' },
-      { id: 'H', label: 'Varejo e Comércio' },
-      { id: 'I', label: 'Serviços Corporativos e Profissionais' },
-      { id: 'J', label: 'Outro...' },
+      { id: 'A', label: 'Moda e beleza' },
+      { id: 'B', label: 'Alimentação e bebidas' },
+      { id: 'C', label: 'Saúde e bem-estar' },
+      { id: 'D', label: 'Educação e consultoria' },
+      { id: 'E', label: 'Tecnologia e inovação' },
+      { id: 'F', label: 'Arquitetura, design e decoração', value: 'Arquitetura · design e decoração' },
+      { id: 'G', label: 'Arte, cultura e eventos', value: 'Arte · cultura e eventos' },
+      { id: 'H', label: 'Varejo e comércio' },
+      { id: 'I', label: 'Serviços corporativos e profissionais' },
+      { id: 'J', label: 'Outro. Qual?', value: 'Outro', followUp: { field: 'segmento_outro', placeholder: 'Qual é o segmento?', required: true } },
     ],
   },
   {
     id: 'P8',
-    notionField: 'momento',
+    notionField: 'origem',
     type: 'single-choice',
-    question: 'Qual é o momento atual do negócio?',
+    question: 'Como você chegou até a VilaColab?',
     required: true,
-    autoAdvance: false,
+    autoAdvance: true,
     options: [
-      {
-        id: 'A',
-        label: 'Estou estruturando ou reposicionando minha marca para que ela tenha uma identidade clara e se conecte melhor com meu público.',
-        sublabel: '🔴 Tipo o Nubank no início',
-      },
-      {
-        id: 'B',
-        label: 'Estou crescendo e quero que minha marca transmita mais valor e credibilidade para conquistar mais clientes.',
-        sublabel: '🔴 Sabe a Dengo Chocolates?',
-      },
-      {
-        id: 'C',
-        label: 'Minha marca já tem presença ou é conhecida, mas preciso modernizá-la e adaptá-la ao mercado atual.',
-        sublabel: '🔴 Como a Havaianas',
-      },
-      {
-        id: 'D',
-        label: 'Quero criar uma experiência marcante para um evento, espaço, embalagem ou serviço.',
-        sublabel: '🔴 Tipo a Granado',
-      },
+      { id: 'A', label: 'Recebi uma indicação. Quem indicou?', value: 'Indicação', followUp: { field: 'indicado_por', placeholder: 'Nome de quem indicou', required: true } },
+      { id: 'B', label: 'Pelo Instagram.', value: 'Instagram' },
+      { id: 'C', label: 'Pelo Google ou por uma pesquisa na internet.', value: 'Google ou pesquisa' },
+      { id: 'D', label: 'Já fui cliente da VilaColab.', value: 'Já fui cliente' },
+      { id: 'E', label: 'Já conhecia a VilaColab.', value: 'Já conhecia a VilaColab' },
+      { id: 'F', label: 'Outro. Onde?', value: 'Outro', followUp: { field: 'origem_outro', placeholder: 'Onde você conheceu a VilaColab?', required: true } },
     ],
   },
+
+  // ── Bloco 3 · Seu momento ─────────────────────────────────────────────
   {
     id: 'P9',
-    notionField: 'desafios',
-    type: 'multi-choice',
-    question: 'O que você sente que falta na sua marca hoje?',
-    sublabel: 'Marque tudo que fizer sentido.',
+    notionField: 'ponto_de_vista',
+    type: 'textarea',
+    question: 'O que você gostaria que as pessoas entendessem sobre o seu negócio ou sobre o jeito como você trabalha?',
+    placeholder: 'Escreva com suas palavras…',
+    sublabel: 'Pode ser uma ideia, um valor ou algo que você faz de um jeito próprio. Não precisa ter a resposta pronta.',
     required: true,
-    options: [
-      { id: 'A', label: 'Não tenho clareza sobre o propósito, posicionamento ou diferencial da minha marca' },
-      { id: 'B', label: 'Minha marca não se destaca nem se diferencia dos concorrentes' },
-      { id: 'C', label: 'Tenho dificuldade de atrair o público certo e comunicar meu valor' },
-      { id: 'D', label: 'Minha identidade visual não transmite a essência e o nível da minha marca' },
-      { id: 'E', label: 'Não consigo cobrar mais porque minha marca não transmite credibilidade suficiente' },
-      { id: 'F', label: 'Minha marca é inconsistente — muda de cara dependendo do canal ou material' },
-      { id: 'G', label: 'Tenho a marca, mas não sei como ativá-la e aplicá-la de forma estratégica' },
-      { id: 'H', label: 'Não tenho uma estratégia clara de como evoluir minha marca ao longo do tempo' },
-    ],
   },
   {
     id: 'P10',
-    notionField: 'estagio_marca',
+    notionField: 'momento',
     type: 'single-choice',
-    question: 'Qual dessas opções melhor descreve o estágio atual da sua marca?',
+    question: 'Em que momento o seu negócio ou projeto está?',
+    sublabel: 'Escolha a opção que mais se aproxima do seu momento.',
     required: true,
     autoAdvance: true,
     options: [
-      { id: 'A', label: 'Ainda não comecei — tenho a ideia mas a marca não existe ainda' },
-      { id: 'B', label: 'Tenho uma identidade visual mas não tenho estratégia nem posicionamento definido' },
-      { id: 'C', label: 'Tenho a estratégia e a identidade, mas falta consistência e aplicação nos canais' },
-      { id: 'D', label: 'Tenho uma marca estruturada, mas precisa evoluir ou ser reposicionada' },
+      { id: 'A', label: 'Estou começando um negócio ou projeto e preciso construir sua marca.', value: 'Começando' },
+      { id: 'B', label: 'Meu negócio já existe, mas sinto que a marca não acompanha o que ele se tornou.', value: 'Marca não acompanha o negócio' },
+      { id: 'C', label: 'O negócio está crescendo e quero que a marca acompanhe essa evolução.', value: 'Crescendo' },
+      { id: 'D', label: 'Minha marca já está estruturada, mas preciso repensar sua direção ou posicionamento.', value: 'Repensar direção' },
+      { id: 'E', label: 'Tenho uma necessidade específica, como um lançamento, evento, espaço ou embalagem.', value: 'Necessidade específica' },
+      { id: 'F', label: 'Outro momento. Qual?', value: 'Outro', followUp: { field: 'momento_outro', placeholder: 'Conte em poucas palavras', required: true } },
     ],
   },
+
+  // ── Bloco 4 · Seus desafios ───────────────────────────────────────────
   {
     id: 'P11',
-    notionField: 'disponibilidade',
+    notionField: 'desafios',
+    type: 'multi-choice',
+    question: 'Quais desafios você percebe na sua marca hoje?',
+    sublabel: 'Selecione todas as opções que fizerem sentido.',
+    required: true,
+    options: [
+      { id: 'A', label: 'Tenho dificuldade para explicar o que torna meu negócio diferente.', value: 'Explicar o diferencial' },
+      { id: 'B', label: 'Minha marca não traduz o que meu negócio realmente é.', value: 'Marca não traduz o negócio' },
+      { id: 'C', label: 'Quero atrair um público mais alinhado e ser menos comparado por preço.', value: 'Público e preço' },
+      { id: 'D', label: 'A identidade visual não está à altura do que eu entrego.', value: 'Identidade visual' },
+      { id: 'E', label: 'Minha marca se apresenta de maneiras diferentes em cada canal.', value: 'Consistência entre canais' },
+      { id: 'F', label: 'Tenho uma marca, mas não sei como aplicá-la no dia a dia.', value: 'Aplicação no dia a dia' },
+      { id: 'G', label: 'O negócio evoluiu e a marca ficou para trás.', value: 'Marca ficou para trás' },
+      { id: 'H', label: 'Estou começando e preciso construir minha marca.', value: 'Construir do zero' },
+      { id: 'I', label: 'Outro. Qual?', value: 'Outro', followUp: { field: 'desafios_outro', placeholder: 'Qual é o desafio?', required: true } },
+    ],
+  },
+
+  // ── Bloco 5 · Como seguimos ───────────────────────────────────────────
+  {
+    id: 'P12',
+    notionField: 'prazo',
     type: 'single-choice',
-    question: 'Como está sua disponibilidade para participar do projeto?',
-    sublabel: 'Projetos de marca têm mais resultado quando o cliente participa ativamente. Quero entender como funciona melhor pra você.',
+    question: 'Quando você gostaria de iniciar o projeto?',
     required: true,
     autoAdvance: true,
     options: [
-      { id: 'A', label: 'Consigo participar ativamente — entendo que o resultado depende da minha presença' },
-      { id: 'B', label: 'Tenho pouco tempo, mas consigo me envolver nos momentos-chave do projeto' },
-      { id: 'C', label: 'Prefiro uma solução mais autônoma, com minha participação apenas no essencial' },
+      { id: 'A', label: 'O quanto antes.', value: 'O quanto antes', followUp: { field: 'data_importante', label: 'Existe alguma data importante para o projeto? Qual?', placeholder: 'Opcional. Ex.: lançamento em março', required: false } },
+      { id: 'B', label: 'Nos próximos 2 meses.', value: 'Próximos 2 meses' },
+      { id: 'C', label: 'Entre 3 e 6 meses.', value: 'Entre 3 e 6 meses' },
+      { id: 'D', label: 'Daqui a mais de 6 meses.', value: 'Mais de 6 meses' },
+      { id: 'E', label: 'Ainda não tenho uma previsão.', value: 'Sem previsão' },
     ],
   },
   {
-    id: 'P12',
+    id: 'P13',
+    notionField: 'formatos_de_interesse',
+    type: 'multi-choice',
+    question: 'Qual formato mais se aproxima do que você busca hoje?',
+    sublabel: 'Selecione todas as opções que fizerem sentido. Os valores são referências iniciais. A proposta final depende das necessidades e do escopo do projeto.',
+    required: true,
+    options: [
+      { id: 'A', label: 'Diagnóstico de marca', description: 'Para compreender o momento do negócio e identificar os próximos passos. A partir de R$ 3 mil.' },
+      { id: 'B', label: 'Acompanhamento mensal', description: 'Para marcas que buscam apoio estratégico e criativo contínuo. A partir de R$ 3 mil por mês.' },
+      { id: 'C', label: 'Projeto pontual', description: 'Para uma necessidade específica, como naming ou direção criativa para um evento ou lançamento. A partir de R$ 6 mil.' },
+      { id: 'D', label: 'Projeto de marca completo', description: 'Para construir ou transformar a marca de forma estratégica e integrada. Projetos geralmente entre R$ 15 mil e R$ 35 mil.' },
+      { id: 'E', label: 'Ainda não sei', description: 'Quero entender qual caminho faz mais sentido para o meu negócio.' },
+    ],
+  },
+  {
+    id: 'P14',
+    notionField: 'disponibilidade',
+    type: 'single-choice',
+    question: 'Como você imagina sua participação no projeto?',
+    sublabel: 'Nosso processo é colaborativo. Sua visão, suas decisões e seus retornos fazem parte da construção da marca.',
+    required: true,
+    autoAdvance: true,
+    options: [
+      { id: 'A', label: 'Quero participar ativamente das conversas e decisões.', value: 'Participação ativa' },
+      { id: 'B', label: 'Tenho pouco tempo, mas consigo estar presente nos momentos-chave.', value: 'Momentos-chave' },
+      { id: 'C', label: 'Prefiro participar só do essencial e deixar o restante com a equipe.', value: 'Só o essencial' },
+    ],
+  },
+  {
+    id: 'P15',
     notionField: 'motivacao',
     type: 'textarea',
-    question: 'Em uma frase: o que te fez chegar até aqui?',
-    placeholder: 'Escreva com suas próprias palavras...',
-    sublabel: 'Pode ser uma frustração, uma virada, um objetivo — o que quiser compartilhar.',
+    question: 'O que fez você decidir olhar para a sua marca agora?',
+    placeholder: 'Escreva com suas palavras…',
+    sublabel: 'Pode ser uma mudança no negócio, uma inquietação, um objetivo ou algo que você queira compartilhar. Uma frase já nos ajuda.',
     required: true,
   },
 ]
+
+// ── Utilitários usados no servidor (Notion, CRM e e-mail) ───────────────
+
+const byField: Record<string, Question> = Object.fromEntries(
+  questions.map((q) => [q.notionField, q])
+)
+
+/** Campos obrigatórios validados na API */
+export const REQUIRED_FIELDS = questions.filter((q) => q.required).map((q) => q.notionField)
+
+/** Todas as opções com campo complementar, para validar e gravar */
+export const FOLLOW_UPS = questions.flatMap((q) =>
+  (q.options ?? [])
+    .filter((o) => o.followUp)
+    .map((o) => ({ parentField: q.notionField, value: optionValue(o), followUp: o.followUp! }))
+)
+
+/** Converte o valor gravado no Notion de volta para o texto que a pessoa leu */
+export function labelFor(field: string, value: string): string {
+  const option: ChoiceOption | undefined = byField[field]?.options?.find(
+    (o) => optionValue(o) === value
+  )
+  if (!option) return value
+  return option.label.replace(/\s*(Qual|Onde|Quem indicou)\?$/, '').replace(/\.$/, '')
+}
+
+export function questionTitle(field: string): string {
+  return byField[field]?.question ?? field
+}

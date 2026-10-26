@@ -16,6 +16,8 @@
 }
 
 html {
+  /* evita zoom de toque duplo ao tocar rápido nas opções no celular */
+  touch-action: manipulation;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

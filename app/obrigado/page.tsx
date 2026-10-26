@@ -1,5 +1,4 @@
 import Logo from '@/components/ui/Logo'
-import Link from 'next/link'
 
 export default function ObrigadoPage() {
   return (
@@ -47,27 +46,20 @@ export default function ObrigadoPage() {
               letterSpacing: '-0.02em',
             }}
           >
-            Recebemos sua mensagem!
+            Recebemos suas respostas!
           </h1>
           <p className="text-base leading-relaxed" style={{ color: 'var(--ink-mid)' }}>
-            Em breve entro em contato para conversarmos sobre o seu projeto.
-            Fique de olho no seu WhatsApp e e-mail.
+            Obrigada por compartilhar um pouco do seu negócio com a gente. Vamos ler suas respostas
+            com atenção e entrar em contato pelo WhatsApp em até 2 dias úteis para conversar sobre
+            os próximos passos.
+          </p>
+          <p className="text-base font-medium" style={{ color: 'var(--ink)' }}>
+            VilaColab 💜
           </p>
         </div>
 
         {/* Divisor */}
         <div className="w-full" style={{ borderTop: '1px solid var(--border)' }} />
-
-        {/* Link pro site */}
-        <Link
-          href="https://www.vilacolab.com.br"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-sm transition-colors hover:opacity-60"
-          style={{ color: 'var(--ink-mid)' }}
-        >
-          Conheça o nosso trabalho →
-        </Link>
 
         <p className="text-sm italic" style={{ color: 'var(--ink-light)' }}>
           Design é estratégia em movimento © VilaColab

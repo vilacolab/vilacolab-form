@@ -30,7 +30,7 @@ export default function TextAreaQuestion({
 
   function handleNext() {
     if (question.required && !value.trim()) {
-      setError('Este campo é obrigatório.')
+      setError('Este campo é obrigatório. Uma frase já basta.')
       return
     }
     onNext()
@@ -42,6 +42,7 @@ export default function TextAreaQuestion({
         <textarea
           ref={ref}
           value={value}
+          maxLength={2000}
           onChange={(e) => { setError(''); onChange(e.target.value) }}
           placeholder={question.placeholder}
           rows={4}
@@ -50,11 +51,6 @@ export default function TextAreaQuestion({
           onFocus={(e) => { if (!error) e.currentTarget.style.borderColor = 'var(--border-dk)' }}
           onBlur={(e) => { if (!error) e.currentTarget.style.borderColor = 'var(--border-md)' }}
         />
-        {question.sublabel && !error && (
-          <p className="text-sm" style={{ color: 'var(--ink-light)' }}>
-            {question.sublabel}
-          </p>
-        )}
         {error && <p className="text-sm text-red-600">{error}</p>}
       </div>
 
