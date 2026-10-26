@@ -67,7 +67,7 @@ export default function FormWrapper() {
       })
       const data = await res.json()
       if (!res.ok || data.error) throw new Error(data.error ?? 'Erro ao enviar')
-      router.push('/obrigado')
+      router.push('/comercial/obrigado')
     } catch (err) {
       setSubmitError(err instanceof Error ? err.message : 'Ocorreu um erro. Tente novamente.')
       setSubmitting(false)
