@@ -39,11 +39,9 @@ export function readable(answers: FormAnswers, field: string): string {
     .join(' | ')
 }
 
-/** Resumo da origem: o que a pessoa declarou + o parâmetro do link, separados */
+/** Resumo da origem declarada pela pessoa (com quem indicou ou o "Outro") */
 export function originSummary(answers: FormAnswers): string {
-  const declared = readable(answers, 'origem')
-  const ref = str(answers, 'ref_link')
-  return [declared, ref ? `link de parceiro: ${ref}` : ''].filter(Boolean).join(' · ')
+  return readable(answers, 'origem')
 }
 
 // Notion: sem vírgulas e no máximo 100 caracteres em nomes de select/multi_select

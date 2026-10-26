@@ -45,7 +45,6 @@ export async function createNotionEntry(answers: FormAnswers): Promise<string> {
       origem: select(str(answers, 'origem')),
       indicado_por: rt(followUpText(answers, 'indicado_por')),
       origem_outro: rt(followUpText(answers, 'origem_outro')),
-      ref_link: rt(str(answers, 'ref_link')),
 
       ponto_de_vista: rt(str(answers, 'ponto_de_vista')),
       momento: select(str(answers, 'momento')),

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useCallback, useEffect } from 'react'
+import { useState, useCallback } from 'react'
 import ReelBanner from './ReelBanner'
 import { useRouter } from 'next/navigation'
 import { AnimatePresence, motion } from 'framer-motion'
@@ -32,12 +32,6 @@ export default function FormWrapper() {
 
   const current = questions[step]
   const isLast = step === TOTAL - 1
-
-  // Link de parceiro (ex.: ?ref=flavia). Fica separado da origem que a pessoa declara na P8.
-  useEffect(() => {
-    const ref = new URLSearchParams(window.location.search).get('ref')
-    if (ref) setAnswers((prev) => ({ ...prev, ref_link: ref.trim().slice(0, 100) }))
-  }, [])
 
   const getValue = useCallback(
     (id: string) => (answers[id] as string) ?? '',
