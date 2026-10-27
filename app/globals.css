@@ -3,8 +3,8 @@
 @tailwind utilities;
 
 /*
-  Linguagem visual inspirada em littletroop.com/info, com as fontes da VilaColab:
-  fundo branco, composição centralizada, serifa leve e apertada (Fraunces) em contraste
+  Linguagem visual inspirada em littletroop.com/info:
+  fundo branco, composição centralizada, serifa estreita e apertada (Instrument Serif) em contraste
   com sans em negrito (Manrope), rótulos pequenos em caixa alta, pílulas e cartões cinza.
 */
 :root {
@@ -24,7 +24,7 @@
   --ink-mid:   var(--ink-2);
   --ink-light: var(--ink-3);
 
-  --font-display: 'Fraunces', Georgia, 'Times New Roman', serif;
+  --font-display: 'Instrument Serif', 'Times New Roman', Georgia, serif;
   --font-sans:    'Manrope', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
@@ -50,11 +50,10 @@ body {
 
 .t-display {
   font-family: var(--font-display);
-  font-weight: 300;
-  font-variation-settings: 'opsz' 144;
-  letter-spacing: -0.03em;
-  word-spacing: 0.04em;
-  line-height: 1.02;
+  font-weight: 400;
+  letter-spacing: -0.035em;
+  word-spacing: 0.02em;
+  line-height: 0.98;
   color: var(--ink);
 }
 

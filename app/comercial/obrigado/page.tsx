@@ -23,7 +23,7 @@ export default function ObrigadoPage() {
 
       <main className="flex-1 flex items-center justify-center px-6 py-16">
         <div className="w-full max-w-[640px] flex flex-col items-center gap-6 text-center">
-          <h1 className="t-display" style={{ fontSize: 'clamp(40px, 6.4vw, 68px)' }}>
+          <h1 className="t-display" style={{ fontSize: 'clamp(44px, 7vw, 76px)' }}>
             Recebemos suas <strong>respostas!</strong>
           </h1>
           <p className="t-support max-w-[520px]" style={{ fontSize: '17px' }}>

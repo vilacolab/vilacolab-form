@@ -153,7 +153,7 @@ export default function FormWrapper() {
 
         <main className="flex-1 flex flex-col items-center pt-14 pb-10 overflow-x-clip">
           <div className="w-full max-w-[1100px] flex flex-col items-center gap-8 px-6 text-center">
-            <h1 className="t-display" style={{ fontSize: 'clamp(36px, 5.4vw, 68px)' }}>
+            <h1 className="t-display" style={{ fontSize: 'clamp(40px, 6vw, 76px)' }}>
               Antes de conversarmos,
               <br />
               <span className="sm:whitespace-nowrap">queremos conhecer <strong>seu negócio.</strong></span>
@@ -229,7 +229,7 @@ export default function FormWrapper() {
               {/* Pergunta */}
               <div className="flex flex-col items-center gap-4 text-center">
                 <p className="t-label">{blockFor(number)}</p>
-                <h2 className="t-display" style={{ fontSize: 'clamp(30px, 5vw, 46px)', lineHeight: 1.04 }}>
+                <h2 className="t-display" style={{ fontSize: 'clamp(34px, 5.4vw, 52px)', lineHeight: 1 }}>
                   {current.question}
                 </h2>
                 {current.sublabel && (
