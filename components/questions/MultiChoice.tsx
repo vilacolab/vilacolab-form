@@ -57,56 +57,31 @@ export default function MultiChoice({ question, answers, setAnswer, onNext }: Mu
               key={option.id}
               type="button"
               onClick={() => toggle(val)}
-              className="text-left rounded-md px-4 py-3 transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-[var(--border-dk)] focus:ring-offset-1"
-              style={{
-                background: isSelected ? 'var(--cream-d)' : 'var(--white)',
-                border: isSelected ? '1px solid var(--border-dk)' : '1px solid var(--border-md)',
-              }}
-              onMouseEnter={(e) => {
-                if (!isSelected) {
-                  e.currentTarget.style.borderColor = 'var(--border-dk)'
-                  e.currentTarget.style.background = 'var(--cream-d)'
-                }
-              }}
-              onMouseLeave={(e) => {
-                if (!isSelected) {
-                  e.currentTarget.style.borderColor = 'var(--border-md)'
-                  e.currentTarget.style.background = 'var(--white)'
-                }
-              }}
+              className="option"
+              data-selected={isSelected ? 'true' : 'false'}
+              aria-pressed={isSelected}
             >
-              <div className="flex items-start gap-3">
-                {/* Checkbox visual */}
+              <span className="flex items-start gap-3">
+                {/* Indicador de seleção múltipla */}
                 <span
-                  className="flex-shrink-0 w-4 h-4 mt-[3px] rounded-sm border flex items-center justify-center transition-colors"
+                  aria-hidden
+                  className="flex-shrink-0 w-[18px] h-[18px] mt-[2px] rounded-full flex items-center justify-center"
                   style={{
-                    background: isSelected ? 'var(--ink)' : 'var(--white)',
-                    borderColor: isSelected ? 'var(--ink)' : 'var(--border-md)',
+                    border: isSelected ? '1px solid var(--bg)' : '1px solid var(--ink)',
+                    background: isSelected ? 'var(--bg)' : 'transparent',
                   }}
                 >
                   {isSelected && (
-                    <svg
-                      className="w-2.5 h-2.5 text-[var(--white)]"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      strokeWidth={3}
-                    >
+                    <svg className="w-2.5 h-2.5" style={{ color: 'var(--ink)' }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3.5}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                     </svg>
                   )}
                 </span>
-                <div className="flex-1">
-                  <p className="text-sm leading-snug font-medium" style={{ color: 'var(--ink)' }}>
-                    {option.label}
-                  </p>
-                  {option.description && (
-                    <p className="mt-1 text-xs leading-relaxed" style={{ color: 'var(--ink-mid)' }}>
-                      {option.description}
-                    </p>
-                  )}
-                </div>
-              </div>
+                <span className="flex-1">
+                  <span className="option-label block">{option.label}</span>
+                  {option.description && <span className="option-desc block">{option.description}</span>}
+                </span>
+              </span>
             </button>
           )
         })}
@@ -123,12 +98,12 @@ export default function MultiChoice({ question, answers, setAnswer, onNext }: Mu
         />
       ))}
 
-      {error && <p className="text-sm text-red-600">{error}</p>}
+      {error && <p className="msg-error">{error}</p>}
 
-      <div className="flex items-center gap-4 mt-1">
-        <Button onClick={handleNext}>Avançar →</Button>
+      <div className="flex flex-col items-center gap-2 pt-2">
+        <Button onClick={handleNext}>Avançar</Button>
         {value.length > 0 && (
-          <span className="text-xs" style={{ color: 'var(--ink-light)' }}>
+          <span className="t-label" style={{ color: 'var(--ink-3)' }}>
             {value.length} {value.length === 1 ? 'selecionado' : 'selecionados'}
           </span>
         )}

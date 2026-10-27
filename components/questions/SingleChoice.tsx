@@ -51,7 +51,7 @@ export default function SingleChoice({ question, answers, setAnswer, onNext }: S
   const showButton = !question.autoAdvance || Boolean(followUp)
 
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-4">
       <div className={`grid gap-2 grid-cols-1 ${twoColumns ? 'sm:grid-cols-2' : ''}`}>
         {question.options?.map((option) => {
           const isSelected = value === optionValue(option)
@@ -60,57 +60,12 @@ export default function SingleChoice({ question, answers, setAnswer, onNext }: S
               key={option.id}
               type="button"
               onClick={() => handleSelect(option)}
-              className="text-left rounded-md px-4 py-3 transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-[var(--border-dk)] focus:ring-offset-1"
-              style={{
-                background: isSelected ? 'var(--cream-d)' : 'var(--white)',
-                border: isSelected ? '1px solid var(--border-dk)' : '1px solid var(--border-md)',
-              }}
-              onMouseEnter={(e) => {
-                if (!isSelected) {
-                  e.currentTarget.style.borderColor = 'var(--border-dk)'
-                  e.currentTarget.style.background = 'var(--cream-d)'
-                }
-              }}
-              onMouseLeave={(e) => {
-                if (!isSelected) {
-                  e.currentTarget.style.borderColor = 'var(--border-md)'
-                  e.currentTarget.style.background = 'var(--white)'
-                }
-              }}
+              className="option"
+              data-selected={isSelected ? 'true' : 'false'}
+              aria-pressed={isSelected}
             >
-              <div className="flex items-start gap-3">
-                <span
-                  className="flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-xs font-semibold mt-0.5 transition-colors"
-                  style={{
-                    background: isSelected ? 'var(--ink)' : 'var(--cream-dd)',
-                    color: isSelected ? 'var(--white)' : 'var(--ink-mid)',
-                  }}
-                >
-                  {option.id}
-                </span>
-                <div className="flex-1">
-                  <p className="text-sm leading-snug font-medium" style={{ color: 'var(--ink)' }}>
-                    {option.label}
-                  </p>
-                  {option.description && (
-                    <p className="mt-1 text-xs" style={{ color: 'var(--ink-light)' }}>
-                      {option.description}
-                    </p>
-                  )}
-                </div>
-                {isSelected && (
-                  <svg
-                    className="flex-shrink-0 w-4 h-4 mt-0.5"
-                    style={{ color: 'var(--ink)' }}
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth={2.5}
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                  </svg>
-                )}
-              </div>
+              <span className="option-label block">{option.label}</span>
+              {option.description && <span className="option-desc block">{option.description}</span>}
             </button>
           )
         })}
@@ -126,12 +81,12 @@ export default function SingleChoice({ question, answers, setAnswer, onNext }: S
         />
       )}
 
-      {error && <p className="text-sm text-red-600 mt-1">{error}</p>}
+      {error && <p className="msg-error">{error}</p>}
 
       {showButton && (
-        <Button onClick={handleNext} className="mt-1 self-start">
-          Avançar →
-        </Button>
+        <div className="flex justify-center pt-2">
+          <Button onClick={handleNext}>Avançar</Button>
+        </div>
       )}
     </div>
   )

@@ -2,17 +2,30 @@
 @tailwind components;
 @tailwind utilities;
 
+/*
+  Linguagem visual inspirada em littletroop.com/info, com as fontes da VilaColab:
+  fundo branco, composição centralizada, serifa leve e apertada (Fraunces) em contraste
+  com sans em negrito (Manrope), rótulos pequenos em caixa alta, pílulas e cartões cinza.
+*/
 :root {
-  --ink:       #1C1B18;
-  --ink-mid:   #4E4D48;
-  --ink-light: #96958E;
-  --cream:     #F2EDE4;
-  --cream-d:   #EAE6DC;
-  --cream-dd:  #DDD9CE;
-  --white:     #FDFCF9;
-  --border:    rgba(28, 27, 24, 0.10);
-  --border-md: rgba(28, 27, 24, 0.18);
-  --border-dk: rgba(28, 27, 24, 0.30);
+  --bg:        #FFFFFF;
+  --ink:       #0F0F0F;
+  --ink-2:     #3A3A3A;   /* textos de apoio: contraste alto */
+  --ink-3:     #6E6E6E;   /* placeholders e rodapé */
+  --line:      #0F0F0F;
+  --soft:      rgba(145, 145, 145, 0.16);
+  --soft-2:    rgba(145, 145, 145, 0.28);
+  --accent:    #1E3CFF;
+  --error:     #C0392B;
+
+  /* nomes antigos, mantidos para compatibilidade */
+  --white:     #FFFFFF;
+  --cream:     var(--bg);
+  --ink-mid:   var(--ink-2);
+  --ink-light: var(--ink-3);
+
+  --font-display: 'Fraunces', Georgia, 'Times New Roman', serif;
+  --font-sans:    'Manrope', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
 html {
@@ -27,8 +40,157 @@ html {
 }
 
 body {
-  background: var(--cream);
+  background: var(--bg);
   color: var(--ink);
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  line-height: 1.6;
+  font-family: var(--font-sans);
+  line-height: 1.5;
+}
+
+/* ── Tipografia ─────────────────────────────────────────────────────── */
+
+.t-display {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-variation-settings: 'opsz' 144;
+  letter-spacing: -0.045em;
+  line-height: 1;
+  color: var(--ink);
+}
+
+/* trecho em negrito dentro de um título, no contraste serifa leve × sans pesada */
+.t-display strong {
+  font-family: var(--font-sans);
+  font-weight: 700;
+  letter-spacing: -0.06em;
+}
+
+.t-label {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+.t-tagline {
+  font-family: var(--font-sans);
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.35;
+  color: var(--ink);
+}
+
+.t-support {
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.55;
+  color: var(--ink-2);
+}
+
+/* ── Componentes ────────────────────────────────────────────────────── */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-family: var(--font-sans);
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  padding: 14px 30px;
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--bg);
+  transition: opacity 150ms ease, transform 150ms ease;
+}
+.btn:hover { opacity: 0.82; }
+.btn:active { transform: scale(0.98); }
+.btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.btn:focus-visible,
+.option:focus-visible,
+.link:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.link {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink);
+  border-radius: 4px;
+}
+.link:hover { opacity: 0.6; }
+
+.option {
+  width: 100%;
+  text-align: left;
+  background: var(--soft);
+  border: 1px solid transparent;
+  border-radius: 22px;
+  padding: 14px 20px;
+  color: var(--ink);
+  transition: background 150ms ease, color 150ms ease;
+}
+.option:hover { background: var(--soft-2); }
+.option[data-selected='true'] {
+  background: var(--ink);
+  color: var(--bg);
+}
+.option[data-selected='true'] .option-desc { color: rgba(255, 255, 255, 0.78); }
+
+.option-label {
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+}
+.option-desc {
+  margin-top: 4px;
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--ink-2);
+}
+
+.field {
+  width: 100%;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  border-radius: 0;
+  padding: 10px 2px;
+  font-family: var(--font-sans);
+  font-size: 20px;
+  font-weight: 500;
+  color: var(--ink);
+  outline: none;
+}
+.field::placeholder { color: var(--ink-3); font-weight: 400; }
+.field:focus { border-bottom-color: var(--accent); }
+.field[data-error='true'] { border-bottom-color: var(--error); }
+
+.field-area {
+  width: 100%;
+  background: var(--soft);
+  border: 1px solid transparent;
+  border-radius: 22px;
+  padding: 16px 20px;
+  font-family: var(--font-sans);
+  font-size: 17px;
+  line-height: 1.5;
+  color: var(--ink);
+  outline: none;
+  resize: none;
+}
+.field-area::placeholder { color: var(--ink-3); }
+.field-area:focus { border-color: var(--accent); }
+.field-area[data-error='true'] { border-color: var(--error); }
+
+.msg-error {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--error);
 }

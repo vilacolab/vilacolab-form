@@ -24,10 +24,10 @@ export default function FollowUpInput({ followUp, value, onChange, onEnter, erro
       initial={{ opacity: 0, y: -4 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.18 }}
-      className="flex flex-col gap-2"
+      className="flex flex-col gap-1 pt-2"
     >
       {followUp.label && (
-        <label htmlFor={followUp.field} className="text-sm font-medium" style={{ color: 'var(--ink)' }}>
+        <label htmlFor={followUp.field} className="t-support" style={{ color: 'var(--ink)', fontWeight: 600 }}>
           {followUp.label}
         </label>
       )}
@@ -40,8 +40,8 @@ export default function FollowUpInput({ followUp, value, onChange, onEnter, erro
         onChange={(e) => onChange(e.target.value)}
         onKeyDown={(e) => e.key === 'Enter' && onEnter()}
         placeholder={followUp.placeholder}
-        className="w-full bg-[var(--white)] border rounded-md px-4 py-[0.7rem] text-base text-[var(--ink)] placeholder:text-[var(--ink-light)] focus:outline-none transition-colors duration-150"
-        style={{ borderColor: error ? '#c0392b' : 'var(--border-md)' }}
+        className="field"
+        data-error={error ? 'true' : undefined}
       />
     </motion.div>
   )

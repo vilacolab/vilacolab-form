@@ -15,6 +15,17 @@ import TextAreaQuestion from '@/components/questions/TextAreaQuestion'
 
 const TOTAL = questions.length
 
+// Rótulo do bloco exibido acima de cada pergunta (até qual número vai cada bloco)
+const BLOCKS: { until: number; name: string }[] = [
+  { until: 5, name: 'Contato' },
+  { until: 8, name: 'Quem é você' },
+  { until: 10, name: 'Seu momento' },
+  { until: 11, name: 'Seus desafios' },
+  { until: 15, name: 'Como seguimos' },
+]
+const blockFor = (n: number) => BLOCKS.find((b) => n <= b.until)?.name ?? ''
+const pad = (n: number) => String(n).padStart(2, '0')
+
 const slideVariants = {
   enter: (dir: number) => ({ x: dir > 0 ? 48 : -48, opacity: 0 }),
   center: { x: 0, opacity: 1 },
@@ -129,74 +140,43 @@ export default function FormWrapper() {
     return (
       <motion.div
         className="min-h-screen flex flex-col"
-        style={{ background: 'var(--cream)' }}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.4 }}
       >
-        {/* Header */}
-        <header className="px-6 pt-6 pb-4" style={{ borderBottom: '1px solid var(--border)' }}>
-          <div className="max-w-form mx-auto">
-            <div className="flex flex-col gap-1 w-fit">
-              <Logo />
-              <p style={{ fontSize: '15px', color: 'var(--ink-light)', letterSpacing: '0.01em' }}>
-                somos um estúdio brasileiro de design estratégico e criativo para marcas únicas.
-              </p>
-            </div>
-          </div>
+        <header className="px-6 pt-6 pb-5 flex flex-col items-center gap-4 text-center" style={{ borderBottom: '1px solid var(--line)' }}>
+          <Logo width={94} />
+          <p className="t-tagline max-w-[560px]">
+            somos um estúdio brasileiro de design estratégico e criativo para marcas únicas.
+          </p>
         </header>
 
-        {/* Conteúdo */}
-        <main className="flex-1 flex flex-col items-center justify-center py-12">
-
-          {/* Reel full-width */}
-          <div className="w-full mb-8">
+        <main className="flex-1 flex flex-col items-center py-10 overflow-x-clip">
+          <div className="w-full mb-10">
             <ReelBanner />
           </div>
 
-          <div className="w-full max-w-form flex flex-col gap-8 px-6">
-
-            {/* Texto */}
-            <div className="flex flex-col gap-4">
-              <h1
-                className="font-medium leading-snug"
-                style={{ fontSize: 'clamp(26px, 4vw, 36px)', color: 'var(--ink)', letterSpacing: '-0.02em' }}
-              >
-                Antes de conversarmos, queremos conhecer seu negócio.
-              </h1>
-              <p style={{ fontSize: '16px', lineHeight: '1.65', color: 'var(--ink-mid)', maxWidth: '520px' }}>
-                Preparamos algumas perguntas para entender seu momento, seus desafios e o que você busca
-                para sua marca. O preenchimento leva aproximadamente 6 minutos.
+          <div className="w-full max-w-[880px] flex flex-col items-center gap-8 px-6 text-center">
+            <h1 className="t-display" style={{ fontSize: 'clamp(38px, 6.4vw, 72px)' }}>
+              Antes de conversarmos,
+              <br />
+              queremos conhecer <strong>seu negócio.</strong>
+            </h1>
+            <div className="flex flex-col gap-3 max-w-[540px]">
+              <p className="t-support" style={{ fontSize: '17px' }}>
+                Preparamos algumas perguntas para entender seu momento, seus desafios e o que você
+                busca para sua marca. O preenchimento leva aproximadamente 4 minutos.
               </p>
-              <p style={{ fontSize: '16px', lineHeight: '1.65', color: 'var(--ink-mid)', maxWidth: '520px' }}>
-                Responda com suas palavras. Não existem respostas certas ou erradas.
-              </p>
+              <p className="t-support" style={{ fontSize: '17px' }}>Responda com suas palavras.</p>
             </div>
-
-            {/* Botão */}
-            <div>
-              <button
-                onClick={() => setStarted(true)}
-                className="inline-flex items-center gap-2 font-medium transition-opacity hover:opacity-70"
-                style={{
-                  background: 'var(--ink)',
-                  color: 'var(--cream)',
-                  fontSize: '15px',
-                  padding: '14px 32px',
-                  borderRadius: '6px',
-                  letterSpacing: '0.01em',
-                }}
-              >
-                Começar →
-              </button>
-            </div>
-
+            <button type="button" onClick={() => setStarted(true)} className="btn">
+              Começar
+            </button>
           </div>
         </main>
 
-        {/* Footer */}
-        <footer className="pb-6 text-center">
-          <p className="text-sm" style={{ color: 'var(--ink-light)' }}>
+        <footer className="pb-6 pt-4 text-center">
+          <p className="t-label" style={{ color: 'var(--ink-3)', letterSpacing: '0.06em' }}>
             Design é estratégia em movimento © VilaColab
           </p>
         </footer>
@@ -205,41 +185,36 @@ export default function FormWrapper() {
   }
 
   // ── Formulário ───────────────────────────────────────────────────────
-  return (
-    <div className="min-h-screen flex flex-col" style={{ background: 'var(--cream)' }}>
+  const number = step + 1
 
-      {/* Header sticky */}
-      <header
-        className="sticky top-0 z-10 backdrop-blur-sm px-6 pt-6 pb-5"
-        style={{ background: 'rgba(244,241,234,0.92)', borderBottom: '1px solid var(--border)' }}
-      >
-        <div className="max-w-form mx-auto flex flex-col gap-4">
-          <div className="flex items-start justify-between">
-            <div className="flex flex-col gap-1 w-fit">
-              <Logo />
-              <p style={{ fontSize: '15px', color: 'var(--ink-light)', letterSpacing: '0.01em' }}>
-                somos um estúdio brasileiro de design estratégico e criativo para marcas únicas.
-              </p>
+  return (
+    <div className="min-h-screen flex flex-col">
+
+      {/* Cabeçalho fixo: voltar · logo · contador */}
+      <header className="sticky top-0 z-10 px-6 pt-4 pb-3" style={{ background: 'rgba(255,255,255,0.94)', backdropFilter: 'blur(6px)', borderBottom: '1px solid var(--line)' }}>
+        <div className="max-w-[880px] mx-auto flex flex-col gap-3">
+          <div className="grid grid-cols-3 items-center">
+            <div>
+              {step > 0 && (
+                <button type="button" onClick={goBack} className="link">
+                  Voltar
+                </button>
+              )}
             </div>
-            {step > 0 && (
-              <button
-                onClick={goBack}
-                className="text-sm flex items-center gap-1 transition-colors"
-                style={{ color: 'var(--ink-light)' }}
-                onMouseEnter={(e) => e.currentTarget.style.color = 'var(--ink-mid)'}
-                onMouseLeave={(e) => e.currentTarget.style.color = 'var(--ink-light)'}
-              >
-                ← Voltar
-              </button>
-            )}
+            <div className="flex justify-center">
+              <Logo width={66} />
+            </div>
+            <p className="t-label text-right" style={{ letterSpacing: '0.06em' }}>
+              {pad(number)}/{pad(TOTAL)}
+            </p>
           </div>
-          <ProgressBar current={step + 1} total={TOTAL} />
+          <ProgressBar current={number} total={TOTAL} />
         </div>
       </header>
 
       {/* Conteúdo */}
       <main className="flex-1 flex items-start justify-center px-6 pt-12 pb-24 overflow-x-clip">
-        <div className="w-full max-w-form">
+        <div className="w-full max-w-[640px]">
           <AnimatePresence mode="wait" custom={direction}>
             <motion.div
               key={current.id}
@@ -249,40 +224,29 @@ export default function FormWrapper() {
               animate="center"
               exit="exit"
               transition={{ duration: 0.26, ease: 'easeInOut' }}
-              className="flex flex-col gap-8"
+              className="flex flex-col gap-9"
             >
               {/* Pergunta */}
-              <div className="flex flex-col gap-3">
-                <h2
-                  className="font-medium leading-snug"
-                  style={{
-                    fontSize: 'clamp(22px, 3vw, 28px)',
-                    color: 'var(--ink)',
-                    letterSpacing: '-0.01em',
-                  }}
-                >
+              <div className="flex flex-col items-center gap-4 text-center">
+                <p className="t-label">{blockFor(number)}</p>
+                <h2 className="t-display" style={{ fontSize: 'clamp(30px, 5vw, 46px)', lineHeight: 1.04 }}>
                   {current.question}
                 </h2>
                 {current.sublabel && (
-                  <p className="text-sm leading-relaxed" style={{ color: 'var(--ink-light)', maxWidth: '560px' }}>
-                    {current.sublabel}
-                  </p>
+                  <p className="t-support max-w-[540px]">{current.sublabel}</p>
                 )}
               </div>
 
               {renderQuestion()}
 
-              {submitError && (
-                <p className="text-sm text-red-600">{submitError}</p>
-              )}
+              {submitError && <p className="msg-error text-center">{submitError}</p>}
             </motion.div>
           </AnimatePresence>
         </div>
       </main>
 
-      {/* Footer */}
       <footer className="pb-6 text-center">
-        <p className="text-sm" style={{ color: 'var(--ink-light)' }}>
+        <p className="t-label" style={{ color: 'var(--ink-3)', letterSpacing: '0.06em' }}>
           Design é estratégia em movimento © VilaColab
         </p>
       </footer>

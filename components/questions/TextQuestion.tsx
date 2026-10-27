@@ -65,7 +65,7 @@ export default function TextQuestion({ question, value, onChange, onNext }: Text
   }
 
   return (
-    <div className="flex flex-col gap-5">
+    <div className="flex flex-col gap-6">
       <div className="flex flex-col gap-2">
         <input
           ref={inputRef}
@@ -79,17 +79,15 @@ export default function TextQuestion({ question, value, onChange, onNext }: Text
           onChange={handleChange}
           onKeyDown={(e) => e.key === 'Enter' && handleNext()}
           placeholder={question.placeholder}
-          className="w-full bg-[var(--white)] border rounded-md px-4 py-[0.7rem] text-base text-[var(--ink)] placeholder:text-[var(--ink-light)] focus:outline-none transition-colors duration-150"
-          style={{ borderColor: error ? '#c0392b' : 'var(--border-md)' }}
-          onFocus={(e) => { if (!error) e.currentTarget.style.borderColor = 'var(--border-dk)' }}
-          onBlur={(e) => { if (!error) e.currentTarget.style.borderColor = 'var(--border-md)' }}
+          className="field"
+          data-error={error ? 'true' : undefined}
         />
-        {error && <p className="text-sm text-red-600">{error}</p>}
+        {error && <p className="msg-error">{error}</p>}
       </div>
 
-      <div className="flex items-center gap-4">
+      <div className="flex justify-center">
         <Button onClick={handleNext}>
-          {question.required || value.trim() ? 'Avançar' : 'Pular'} →
+          {question.required || value.trim() ? 'Avançar' : 'Pular'}
         </Button>
       </div>
     </div>

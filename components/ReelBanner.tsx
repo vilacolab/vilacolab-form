@@ -22,7 +22,7 @@ export default function ReelBanner() {
       const div = document.createElement('div')
       div.className = 'sm-card-reel'
       div.style.position = 'absolute'
-      div.style.borderRadius = '3px'
+      div.style.borderRadius = '6px'
       div.style.overflow = 'hidden'
       div.style.boxShadow = '0 2px 18px rgba(0,0,0,0.09)'
       div.style.width = c.w + 'px'
@@ -79,7 +79,7 @@ export default function ReelBanner() {
       ref={containerRef}
       style={{
         width: '100%',
-        background: '#F2EDE4',
+        background: 'transparent',
         height: '600px',
         overflow: 'hidden',
         position: 'relative',

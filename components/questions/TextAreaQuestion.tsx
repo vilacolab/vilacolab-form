@@ -37,7 +37,7 @@ export default function TextAreaQuestion({
   }
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-6">
       <div className="flex flex-col gap-2">
         <textarea
           ref={ref}
@@ -46,17 +46,17 @@ export default function TextAreaQuestion({
           onChange={(e) => { setError(''); onChange(e.target.value) }}
           placeholder={question.placeholder}
           rows={4}
-          className="w-full bg-[var(--white)] border rounded-md px-4 py-3 text-base text-[var(--ink)] placeholder:text-[var(--ink-light)] focus:outline-none resize-none transition-colors duration-150"
-          style={{ borderColor: error ? '#c0392b' : 'var(--border-md)' }}
-          onFocus={(e) => { if (!error) e.currentTarget.style.borderColor = 'var(--border-dk)' }}
-          onBlur={(e) => { if (!error) e.currentTarget.style.borderColor = 'var(--border-md)' }}
+          className="field-area"
+          data-error={error ? 'true' : undefined}
         />
-        {error && <p className="text-sm text-red-600">{error}</p>}
+        {error && <p className="msg-error">{error}</p>}
       </div>
 
-      <Button onClick={handleNext} loading={loading} className="self-start">
-        {isLast ? 'Enviar →' : 'Avançar →'}
-      </Button>
+      <div className="flex justify-center">
+        <Button onClick={handleNext} loading={loading}>
+          {isLast ? 'Enviar' : 'Avançar'}
+        </Button>
+      </div>
     </div>
   )
 }

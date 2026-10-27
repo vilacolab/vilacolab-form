@@ -114,7 +114,7 @@ export async function sendNotificationEmail(answers: FormAnswers, notionUrl: str
                     <tr>
                       <td>
                         <a href="${esc(notionUrl)}" style="display:inline-block;background:#1C1B18;color:#F4F1EA;font-size:14px;font-weight:500;padding:13px 28px;text-decoration:none;letter-spacing:0.01em;">
-                          Ver no Notion →
+                          Ver no Notion
                         </a>
                       </td>
                     </tr>

@@ -18,9 +18,7 @@ export default function ProgressBar({ current, total }: ProgressBarProps) {
         <div
           key={i}
           className="flex-1 h-[2px] rounded-full transition-colors duration-300"
-          style={{
-            background: i < current ? 'var(--ink)' : 'var(--cream-dd)',
-          }}
+          style={{ background: i < current ? 'var(--ink)' : 'var(--soft-2)' }}
         />
       ))}
     </div>

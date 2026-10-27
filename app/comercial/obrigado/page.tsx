@@ -1,71 +1,47 @@
 import Logo from '@/components/ui/Logo'
 
+function Heart() {
+  return (
+    <svg aria-hidden width="18" height="16" viewBox="0 0 24 21" style={{ display: 'inline-block', verticalAlign: '-2px' }}>
+      <path
+        fill="var(--accent)"
+        d="M12 21s-1.4-.9-3.3-2.4C5.2 15.8 0 11.6 0 6.6 0 3 2.8 0 6.3 0c2.2 0 4 1.1 5.7 3.2C13.7 1.1 15.5 0 17.7 0 21.2 0 24 3 24 6.6c0 5-5.2 9.2-8.7 12-1.9 1.5-3.3 2.4-3.3 2.4z"
+      />
+    </svg>
+  )
+}
+
 export default function ObrigadoPage() {
   return (
-    <div
-      className="min-h-screen flex flex-col items-center justify-center px-6"
-      style={{ background: 'var(--cream)' }}
-    >
-      <div className="w-full max-w-lg flex flex-col items-center text-center gap-10">
+    <div className="min-h-screen flex flex-col">
+      <header className="px-6 pt-6 pb-5 flex flex-col items-center gap-4 text-center" style={{ borderBottom: '1px solid var(--line)' }}>
+        <Logo width={94} />
+        <p className="t-tagline max-w-[560px]">
+          somos um estúdio brasileiro de design estratégico e criativo para marcas únicas.
+        </p>
+      </header>
 
-        {/* Logo */}
-        <div className="flex flex-col items-center gap-2">
-          <Logo />
-          <p className="text-center" style={{ fontSize: '13px', color: 'var(--ink-light)', letterSpacing: '0.01em' }}>
-            somos um estúdio brasileiro de design estratégico e criativo para marcas únicas.
-          </p>
-        </div>
-
-        {/* Divisor */}
-        <div className="w-full" style={{ borderTop: '1px solid var(--border-md)' }} />
-
-        {/* Ícone de sucesso */}
-        <div
-          className="w-16 h-16 rounded-full flex items-center justify-center"
-          style={{ background: 'var(--cream-d)', border: '1px solid var(--border-md)' }}
-        >
-          <svg
-            className="w-7 h-7"
-            style={{ color: 'var(--ink)' }}
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            strokeWidth={2}
-          >
-            <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-          </svg>
-        </div>
-
-        {/* Mensagem */}
-        <div className="flex flex-col gap-3">
-          <h1
-            className="font-medium leading-tight"
-            style={{
-              fontSize: 'clamp(24px, 4vw, 32px)',
-              color: 'var(--ink)',
-              letterSpacing: '-0.02em',
-            }}
-          >
-            Recebemos suas respostas!
+      <main className="flex-1 flex items-center justify-center px-6 py-16">
+        <div className="w-full max-w-[640px] flex flex-col items-center gap-6 text-center">
+          <h1 className="t-display" style={{ fontSize: 'clamp(40px, 6.4vw, 68px)' }}>
+            Recebemos suas <strong>respostas!</strong>
           </h1>
-          <p className="text-base leading-relaxed" style={{ color: 'var(--ink-mid)' }}>
+          <p className="t-support max-w-[520px]" style={{ fontSize: '17px' }}>
             Obrigada por compartilhar um pouco do seu negócio com a gente. Vamos ler suas respostas
             com atenção e entrar em contato pelo WhatsApp em até 2 dias úteis para conversar sobre
             os próximos passos.
           </p>
-          <p className="text-base font-medium" style={{ color: 'var(--ink)' }}>
-            VilaColab 💜
+          <p className="t-tagline flex items-center gap-2">
+            VilaColab <Heart />
           </p>
         </div>
+      </main>
 
-        {/* Divisor */}
-        <div className="w-full" style={{ borderTop: '1px solid var(--border)' }} />
-
-        <p className="text-sm italic" style={{ color: 'var(--ink-light)' }}>
+      <footer className="pb-6 text-center">
+        <p className="t-label" style={{ color: 'var(--ink-3)', letterSpacing: '0.06em' }}>
           Design é estratégia em movimento © VilaColab
         </p>
-
-      </div>
+      </footer>
     </div>
   )
 }
