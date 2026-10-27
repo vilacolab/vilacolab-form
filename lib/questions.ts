@@ -1,6 +1,6 @@
 import { Question, ChoiceOption, optionValue } from '@/types/form'
 
-// Formulário de primeiro contato · v2 (out/2026)
+// Formulário de primeiro contato · v2 (out/2026) · 16 perguntas
 // Regra de linguagem: sem travessões nos textos exibidos.
 
 export const questions: Question[] = [
@@ -176,18 +176,34 @@ export const questions: Question[] = [
     notionField: 'formatos_de_interesse',
     type: 'multi-choice',
     question: 'Qual formato mais se aproxima do que você busca hoje?',
-    sublabel: 'Selecione todas as opções que fizerem sentido. Os valores são referências iniciais. A proposta final depende das necessidades e do escopo do projeto.',
+    sublabel: 'Selecione todas as opções que fizerem sentido.',
     required: true,
     options: [
-      { id: 'A', label: 'Diagnóstico de marca', description: 'Para compreender o momento do negócio e identificar os próximos passos. A partir de R$ 3 mil.' },
-      { id: 'B', label: 'Acompanhamento mensal', description: 'Para marcas que buscam apoio estratégico e criativo contínuo. A partir de R$ 3 mil por mês.' },
-      { id: 'C', label: 'Projeto pontual', description: 'Para uma necessidade específica, como naming ou direção criativa para um evento ou lançamento. A partir de R$ 6 mil.' },
-      { id: 'D', label: 'Projeto de marca completo', description: 'Para construir ou transformar a marca de forma estratégica e integrada. Projetos geralmente entre R$ 15 mil e R$ 35 mil.' },
+      { id: 'A', label: 'Diagnóstico de marca', description: 'Para compreender o momento do negócio e identificar os próximos passos.' },
+      { id: 'B', label: 'Acompanhamento mensal', description: 'Para marcas que buscam apoio estratégico e criativo contínuo.' },
+      { id: 'C', label: 'Projeto pontual', description: 'Para uma necessidade específica, como naming ou direção criativa para um evento ou lançamento.' },
+      { id: 'D', label: 'Projeto de marca completo', description: 'Para construir ou transformar a marca de forma estratégica e integrada.' },
       { id: 'E', label: 'Ainda não sei', description: 'Quero entender qual caminho faz mais sentido para o meu negócio.' },
     ],
   },
   {
     id: 'P14',
+    notionField: 'investimento',
+    type: 'single-choice',
+    question: 'Qual investimento você tem planejado para esse projeto?',
+    sublabel: 'Isso nos ajuda a chegar na conversa com um caminho que caiba no seu momento.',
+    required: true,
+    autoAdvance: true,
+    options: [
+      { id: 'A', label: 'Até R$ 5 mil', value: 'Até R$ 5 mil' },
+      { id: 'B', label: 'Entre R$ 5 e 15 mil', value: 'R$ 5 a 15 mil' },
+      { id: 'C', label: 'Entre R$ 15 e 30 mil', value: 'R$ 15 a 30 mil' },
+      { id: 'D', label: 'Acima de R$ 30 mil', value: 'Acima de R$ 30 mil' },
+      { id: 'E', label: 'Ainda não defini', value: 'Ainda não defini' },
+    ],
+  },
+  {
+    id: 'P15',
     notionField: 'disponibilidade',
     type: 'single-choice',
     question: 'Como você imagina sua participação no projeto?',
@@ -201,7 +217,7 @@ export const questions: Question[] = [
     ],
   },
   {
-    id: 'P15',
+    id: 'P16',
     notionField: 'motivacao',
     type: 'textarea',
     question: 'O que fez você decidir olhar para a sua marca agora?',

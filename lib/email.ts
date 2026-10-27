@@ -102,6 +102,7 @@ export async function sendNotificationEmail(answers: FormAnswers, notionUrl: str
 
                   <table width="100%" cellpadding="0" cellspacing="0" style="margin-top:12px;">
                     ${row('Formatos de interesse', readable(answers, 'formatos_de_interesse'))}
+                    ${row('Investimento planejado', readable(answers, 'investimento'))}
                     ${row('Quando quer começar', prazo)}
                     ${row('Participação no projeto', readable(answers, 'disponibilidade'))}
                     ${row('Como se descreve', readable(answers, 'perfil'))}

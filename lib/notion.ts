@@ -56,6 +56,7 @@ export async function createNotionEntry(answers: FormAnswers): Promise<string> {
       prazo: select(str(answers, 'prazo')),
       data_importante: rt(followUpText(answers, 'data_importante')),
       formatos_de_interesse: multi(list(answers, 'formatos_de_interesse')),
+      investimento: select(str(answers, 'investimento')),
       disponibilidade: select(str(answers, 'disponibilidade')),
       motivacao: rt(str(answers, 'motivacao')),
 
@@ -130,6 +131,9 @@ export async function createCRMEntry(answers: FormAnswers): Promise<void> {
 
       heading('Formatos de interesse'),
       ...bullets(split('formatos_de_interesse')),
+
+      heading('Investimento planejado'),
+      paragraph(readable(answers, 'investimento')),
 
       heading('Quando quer começar'),
       paragraph(labelFor('prazo', str(answers, 'prazo')) + (dataImportante ? ` · data importante: ${dataImportante}` : '')),

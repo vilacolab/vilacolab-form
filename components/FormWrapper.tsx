@@ -21,7 +21,7 @@ const BLOCKS: { until: number; name: string }[] = [
   { until: 8, name: 'Quem é você' },
   { until: 10, name: 'Seu momento' },
   { until: 11, name: 'Seus desafios' },
-  { until: 15, name: 'Como seguimos' },
+  { until: 16, name: 'Como seguimos' },
 ]
 const blockFor = (n: number) => BLOCKS.find((b) => n <= b.until)?.name ?? ''
 const pad = (n: number) => String(n).padStart(2, '0')
@@ -161,7 +161,7 @@ export default function FormWrapper() {
             <div className="flex flex-col gap-3 max-w-[540px]">
               <p className="t-support" style={{ fontSize: '17px' }}>
                 Preparamos algumas perguntas para entender seu momento, seus desafios e o que você
-                busca para sua marca. O preenchimento leva aproximadamente 4 minutos.
+                busca para sua marca. O preenchimento leva aproximadamente 5 minutos.
               </p>
               <p className="t-support" style={{ fontSize: '17px' }}>Responda com suas palavras.</p>
             </div>
