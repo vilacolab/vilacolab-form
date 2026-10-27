@@ -146,21 +146,17 @@ export default function FormWrapper() {
       >
         <header className="px-6 pt-6 pb-5 flex flex-col items-center gap-4 text-center" style={{ borderBottom: '1px solid var(--line)' }}>
           <Logo width={94} />
-          <p className="t-tagline max-w-[560px]">
+          <p className="t-tagline max-w-[720px]">
             somos um estúdio brasileiro de design estratégico e criativo para marcas únicas.
           </p>
         </header>
 
-        <main className="flex-1 flex flex-col items-center py-10 overflow-x-clip">
-          <div className="w-full mb-10">
-            <ReelBanner />
-          </div>
-
-          <div className="w-full max-w-[880px] flex flex-col items-center gap-8 px-6 text-center">
-            <h1 className="t-display" style={{ fontSize: 'clamp(38px, 6.4vw, 72px)' }}>
+        <main className="flex-1 flex flex-col items-center pt-14 pb-10 overflow-x-clip">
+          <div className="w-full max-w-[1100px] flex flex-col items-center gap-8 px-6 text-center">
+            <h1 className="t-display" style={{ fontSize: 'clamp(36px, 5.4vw, 68px)' }}>
               Antes de conversarmos,
               <br />
-              queremos conhecer <strong>seu negócio.</strong>
+              <span className="sm:whitespace-nowrap">queremos conhecer <strong>seu negócio.</strong></span>
             </h1>
             <div className="flex flex-col gap-3 max-w-[540px]">
               <p className="t-support" style={{ fontSize: '17px' }}>
@@ -172,6 +168,10 @@ export default function FormWrapper() {
             <button type="button" onClick={() => setStarted(true)} className="btn">
               Começar
             </button>
+          </div>
+
+          <div className="w-full mt-14">
+            <ReelBanner />
           </div>
         </main>
 

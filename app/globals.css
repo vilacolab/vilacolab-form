@@ -52,8 +52,9 @@ body {
   font-family: var(--font-display);
   font-weight: 300;
   font-variation-settings: 'opsz' 144;
-  letter-spacing: -0.045em;
-  line-height: 1;
+  letter-spacing: -0.03em;
+  word-spacing: 0.04em;
+  line-height: 1.02;
   color: var(--ink);
 }
 
@@ -61,7 +62,8 @@ body {
 .t-display strong {
   font-family: var(--font-sans);
   font-weight: 700;
-  letter-spacing: -0.06em;
+  letter-spacing: -0.045em;
+  word-spacing: 0;
 }
 
 .t-label {
