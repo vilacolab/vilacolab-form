@@ -147,7 +147,7 @@ export default function FormWrapper() {
         <header className="px-6 pt-6 pb-5 flex flex-col items-center gap-4 text-center" style={{ borderBottom: '1px solid var(--line)' }}>
           <Logo width={94} />
           <p className="t-tagline max-w-[720px]">
-            somos um estúdio brasileiro de design estratégico e criativo para marcas únicas.
+            somos um estúdio brasileiro de design estratégico e criativo para marcas que pensam diferente.
           </p>
         </header>
 
